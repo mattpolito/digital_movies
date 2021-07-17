@@ -14,9 +14,10 @@ defmodule DigitalMovies do
   """
   def run do
     stores = [
-      DigitalMovies.Stores.UVCodeShop,
       DigitalMovies.Stores.BoxOfficeDigital,
       DigitalMovies.Stores.HappyWatching,
+      DigitalMovies.Stores.UVCodeShop,
+      DigitalMovies.Stores.UltravioletDigitalStore,
     ]
 
     # for store <- stores,
