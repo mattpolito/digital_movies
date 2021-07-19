@@ -5,6 +5,7 @@ defmodule DigitalMovies.Stores.HappyWatching do
   @behaviour StoreBehavior
 
   @products_selector ".products .product"
+  @product_url_selector ".details > a"
   @title_selector ".details h4"
   @price_selector ".details .price"
   @url "https://happywatching.com/collections/itunes?sort_by=price-ascending"
@@ -29,13 +30,14 @@ defmodule DigitalMovies.Stores.HappyWatching do
     |> Enum.map(&parse_product/1)
   end
 
-  defp parse_product(product) do
+  def parse_product(product) do
     %{title: title, type: type} = parse_product_title(product)
 
     %Product{
-      title: title,
       price: parse_product_price(product),
-      type: type
+      title: title,
+      type: type,
+      url: parse_product_url(product),
     }
   end
 
@@ -45,9 +47,7 @@ defmodule DigitalMovies.Stores.HappyWatching do
       |> Floki.find(@title_selector)
       |> Floki.text()
 
-    regex = ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_types, "|")}))$/i
-
-    case Regex.named_captures(regex, title) do
+    case parse_type_from_title(title) do
       %{"title" => title, "type" => type} ->
         %{
           title: title,
@@ -70,5 +70,21 @@ defmodule DigitalMovies.Stores.HappyWatching do
     |> String.replace(~r/[^\d]/, "")
     |> Integer.parse()
     |> elem(0)
+  end
+
+  defp parse_product_url(product) do
+    path = product
+    |> Floki.find(@product_url_selector)
+    |> Floki.attribute("href")
+    |> List.first
+
+    %URI{host: host, scheme: scheme} = URI.parse(@url)
+
+    "#{scheme}://#{host}#{path}"
+  end
+
+  def parse_type_from_title(title) do
+    regex = ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_types, "|")}))$/i
+    Regex.named_captures(regex, title)
   end
 end

@@ -1,25 +1,13 @@
 defmodule DigitalMovies do
-  @moduledoc """
-  Documentation for `DigitalMovies`.
-  """
+  @stores [
+    DigitalMovies.Stores.BoxOfficeDigital,
+    DigitalMovies.Stores.HappyWatching,
+    DigitalMovies.Stores.UVCodeShop,
+    DigitalMovies.Stores.UltravioletDigitalStore,
+    DigitalMovies.Stores.HDMoveCodes,
+  ]
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> DigitalMovies.hello()
-      :world
-
-  """
-  def run do
-    stores = [
-      DigitalMovies.Stores.BoxOfficeDigital,
-      DigitalMovies.Stores.HappyWatching,
-      DigitalMovies.Stores.UVCodeShop,
-      DigitalMovies.Stores.UltravioletDigitalStore,
-    ]
-
+  def run(stores \\ @stores) do
     # for store <- stores,
     #     %HTTPoison.Response{body: body, status_code: 200} <- Crawly.fetch(store.url) do
     #   {:ok, document} = Floki.parse_document(body)

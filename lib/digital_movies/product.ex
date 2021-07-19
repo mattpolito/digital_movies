@@ -1,3 +1,3 @@
 defmodule DigitalMovies.Product do
-  defstruct [:title, :price, :type]
+  defstruct [:title, :price, :type, :url]
 end

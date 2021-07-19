@@ -4,16 +4,20 @@ defmodule DigitalMovies.Stores.UVCodeShop do
 
   @behaviour StoreBehavior
 
-  @products_selector ".grid-uniform .grid-item:not(.sold-out)"
-  @title_selector "p"
   @price_selector ".product-item--price"
-  @url "https://www.uvcodeshop.com/collections/itunes-hd?sort_by=price-ascending"
+  @product_url_selector "a.product-grid-item"
+  @products_selector ".grid-uniform .grid-item:not(.sold-out)"
   @service_types [
-    "SD VUDU/MA or itunes SD via MA",
+    Regex.escape("SD VUDU/MA or itunes SD via MA"),
     "SD or itunes SD via MA",
+    "HD VUDU/MA or itunes HD via MA",
+    "HDX or itunes HD via MA",
+    Regex.escape("itunes 4K UHD (Does not port)"),
     "itunes 4K UHD",
     "itunes HD"
   ]
+  @title_selector "p"
+  @url "https://www.uvcodeshop.com/collections/itunes-hd?sort_by=price-ascending"
 
   @impl StoreBehavior
   def url, do: @url
@@ -25,13 +29,14 @@ defmodule DigitalMovies.Stores.UVCodeShop do
     |> Enum.map(&parse_product/1)
   end
 
-  defp parse_product(product) do
+  def parse_product(product) do
     %{title: title, type: type} = parse_product_title(product)
 
     %Product{
-      title: title,
       price: parse_product_price(product),
-      type: type
+      title: title,
+      type: type,
+      url: parse_product_url(product),
     }
   end
 
@@ -41,9 +46,7 @@ defmodule DigitalMovies.Stores.UVCodeShop do
       |> Floki.find(@title_selector)
       |> Floki.text()
 
-    regex = ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_types, "|")}))$/i
-
-    case Regex.named_captures(regex, title) do
+    case parse_type_from_title(title) do
       %{"title" => title, "type" => type} ->
         %{
           title: title,
@@ -64,5 +67,21 @@ defmodule DigitalMovies.Stores.UVCodeShop do
     |> Floki.text()
     |> Integer.parse()
     |> elem(0)
+  end
+
+  defp parse_product_url(product) do
+    path = product
+    |> Floki.find(@product_url_selector)
+    |> Floki.attribute("href")
+    |> List.first
+
+    %URI{host: host, scheme: scheme} = URI.parse(@url)
+
+    "#{scheme}://#{host}#{path}"
+  end
+
+  def parse_type_from_title(title) do
+    regex = ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_types, "|")}))$/i
+    Regex.named_captures(regex, title)
   end
 end

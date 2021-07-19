@@ -1,14 +1,21 @@
-defmodule DigitalMovies.Stores.BoxOfficeDigital do
+defmodule DigitalMovies.Stores.HDMovieCodes do
   alias DigitalMovies.Product
   alias DigitalMovies.Stores.StoreBehavior
 
   @behaviour StoreBehavior
 
-  @price_selector ".card .card-body .price-section .price.price--withoutTax"
-  @product_url_selector ".card-figure > a"
-  @products_selector "main .productGrid .product"
-  @title_selector ".card .card-body .card-title"
-  @url "https://boxofficedigital.com/formats/itunes-4k/?sort=priceasc"
+  @products_selector ".products [itemprop='itemListElement']"
+  @title_selector "[itemprop='name']"
+  @price_selector "[itemprop='price']"
+  @product_url_selector "[itemprop='url']"
+  @url "https://hdmoviecodes.com/collections/itunes-hd?sort_by=price-ascending"
+  @service_types [
+    "VUDU HD or iTunes HD via Movies Anywhere",
+    "VUDU 4K through iTunes 4K",
+    "VUDU HD or iTunes HD via MA",
+    "iTunes 4K",
+    "iTunes HD",
+  ]
 
   @impl StoreBehavior
   def url, do: @url
@@ -24,8 +31,8 @@ defmodule DigitalMovies.Stores.BoxOfficeDigital do
     %{title: title, type: type} = parse_product_title(product)
 
     %Product{
-      price: parse_product_price(product),
       title: title,
+      price: parse_product_price(product),
       type: type,
       url: parse_product_url(product),
     }
@@ -52,24 +59,29 @@ defmodule DigitalMovies.Stores.BoxOfficeDigital do
     end
   end
 
+  def parse_type_from_title(title) do
+    regex = ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_types, "|")}))$/i
+    Regex.named_captures(regex, title)
+  end
+
   defp parse_product_price(product) do
     product
     |> Floki.find(@price_selector)
-    |> Floki.text()
+    |> Floki.attribute("content")
+    |> List.first
     |> String.replace(~r/[^\d]/, "")
     |> Integer.parse()
     |> elem(0)
   end
 
-  def parse_type_from_title(title) do
-    regex = ~r/^(?<title>.+)\s\[(?<type>.+)\]/i
-    Regex.named_captures(regex, title)
-  end
-
   defp parse_product_url(product) do
-    product
+    path = product
     |> Floki.find(@product_url_selector)
     |> Floki.attribute("href")
     |> List.first
+
+    %URI{host: host, scheme: scheme} = URI.parse(@url)
+
+    "#{scheme}://#{host}#{path}"
   end
 end
