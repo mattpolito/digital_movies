@@ -1,8 +1,6 @@
 defmodule DigitalMovies.Stores.BoxOfficeDigital do
   alias DigitalMovies.Product
-  alias DigitalMovies.Stores.StoreBehavior
-
-  @behaviour StoreBehavior
+  alias DigitalMovies.Store, as: MovieStore
 
   @price_selector ".card .card-body .price-section .price.price--withoutTax"
   @product_url_selector ".card-figure > a"
@@ -10,16 +8,9 @@ defmodule DigitalMovies.Stores.BoxOfficeDigital do
   @title_selector ".card .card-body .card-title"
   @url "https://boxofficedigital.com/formats/itunes-4k/?sort=priceasc"
 
-  @impl StoreBehavior
-  def url, do: @url
+  use MovieStore
 
-  @impl StoreBehavior
-  def parse(document) do
-    document
-    |> Floki.find(@products_selector)
-    |> Enum.map(&parse_product/1)
-  end
-
+  @impl MovieStore
   def parse_product(product) do
     %{title: title, type: type} = parse_product_title(product)
 
@@ -27,7 +18,7 @@ defmodule DigitalMovies.Stores.BoxOfficeDigital do
       price: parse_product_price(product),
       title: title,
       type: type,
-      url: parse_product_url(product),
+      url: parse_product_url(product)
     }
   end
 
@@ -70,6 +61,6 @@ defmodule DigitalMovies.Stores.BoxOfficeDigital do
     product
     |> Floki.find(@product_url_selector)
     |> Floki.attribute("href")
-    |> List.first
+    |> List.first()
   end
 end

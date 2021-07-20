@@ -21,7 +21,7 @@ defmodule DigitalMovies.MixProject do
   defp deps do
     [
       {:crawly, "~> 0.13.0"},
-      {:floki, "~> 0.26.0"},
+      {:floki, "~> 0.26.0"}
     ]
   end
 end

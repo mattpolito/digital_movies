@@ -12,8 +12,7 @@ defmodule DigitalMovies.Stores.BoxOfficeDigitalTest do
              price: 190,
              title: "Fifty Shades Darker",
              type: "iTunes 4K",
-             url:
-               "https://boxofficedigital.com/fifty-shades-darker-itunes-4k/"
+             url: "https://boxofficedigital.com/fifty-shades-darker-itunes-4k/"
            }
   end
 
