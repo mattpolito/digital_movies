@@ -1,10 +1,11 @@
 defmodule DigitalMovies do
   @stores [
     DigitalMovies.Stores.BoxOfficeDigital,
+    DigitalMovies.Stores.HDMovieCodes,
     DigitalMovies.Stores.HappyWatching,
+    DigitalMovies.Stores.InstantDigitalMovies,
     DigitalMovies.Stores.UVCodeShop,
     DigitalMovies.Stores.UltravioletDigitalStore,
-    DigitalMovies.Stores.HDMovieCodes
   ]
 
   def run(stores \\ @stores) do
