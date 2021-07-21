@@ -57,7 +57,7 @@ defmodule DigitalMovies.Stores.InstantDigitalMovies do
     Regex.named_captures(regex, title)
   end
 
-  defp parse_product_url(product) do
+  def parse_product_url(product) do
     product
     |> Floki.find(@product_url_selector)
     |> Floki.attribute("href")

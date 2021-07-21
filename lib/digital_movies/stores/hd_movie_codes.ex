@@ -64,16 +64,4 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
     |> Integer.parse()
     |> elem(0)
   end
-
-  defp parse_product_url(product) do
-    path =
-      product
-      |> Floki.find(@product_url_selector)
-      |> Floki.attribute("href")
-      |> List.first()
-
-    %URI{host: host, scheme: scheme} = URI.parse(@url)
-
-    "#{scheme}://#{host}#{path}"
-  end
 end

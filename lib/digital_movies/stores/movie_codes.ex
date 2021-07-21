@@ -74,16 +74,4 @@ defmodule DigitalMovies.Stores.MovieCodes do
     regex = ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_types, "|")}))$/i
     Regex.named_captures(regex, String.trim(title))
   end
-
-  defp parse_product_url(product) do
-    path =
-      product
-      |> Floki.find(@product_url_selector)
-      |> Floki.attribute("href")
-      |> List.first()
-
-    %URI{host: host, scheme: scheme} = URI.parse(@url)
-
-    "#{scheme}://#{host}#{path}"
-  end
 end
