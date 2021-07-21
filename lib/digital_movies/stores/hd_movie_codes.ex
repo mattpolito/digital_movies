@@ -55,7 +55,7 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
     Regex.named_captures(regex, title)
   end
 
-  defp parse_product_price(product) do
+  def parse_product_price(product) do
     product
     |> Floki.find(@price_selector)
     |> Floki.attribute("content")

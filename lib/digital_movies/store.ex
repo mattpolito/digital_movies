@@ -8,11 +8,19 @@ defmodule DigitalMovies.Store do
       @behaviour DigitalMovies.Store
 
       def parse(document), do: DigitalMovies.Store.parse(__MODULE__, document)
-      def parse_product_url(product), do: DigitalMovies.Store.parse_product_url(__MODULE__, product)
-      def products_selector, do: @products_selector
+
+      def parse_product_price(product),
+        do: DigitalMovies.Store.parse_product_price(__MODULE__, product)
+
+      def parse_product_url(product),
+        do: DigitalMovies.Store.parse_product_url(__MODULE__, product)
+
+      def price_selector, do: @price_selector
       def product_url_selector, do: @product_url_selector
+      def products_selector, do: @products_selector
       def url, do: @url
 
+      defoverridable parse_product_price: 1
       defoverridable parse_product_url: 1
     end
   end
@@ -33,5 +41,14 @@ defmodule DigitalMovies.Store do
     %URI{host: host, scheme: scheme} = URI.parse(module.url)
 
     "#{scheme}://#{host}#{path}"
+  end
+
+  def parse_product_price(module, product) do
+    product
+    |> Floki.find(module.price_selector)
+    |> Floki.text()
+    |> String.replace(~r/[^\d]/, "")
+    |> Integer.parse()
+    |> elem(0)
   end
 end

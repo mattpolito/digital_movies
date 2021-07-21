@@ -53,7 +53,7 @@ defmodule DigitalMovies.Stores.HappyWatching do
     end
   end
 
-  defp parse_product_price(product) do
+  def parse_product_price(product) do
     product
     |> Floki.find(@price_selector)
     |> Floki.filter_out("del")

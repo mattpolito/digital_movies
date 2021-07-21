@@ -48,15 +48,6 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStore do
     end
   end
 
-  defp parse_product_price(product) do
-    product
-    |> Floki.find(@price_selector)
-    |> Floki.text()
-    |> String.replace(~r/[^\d]/, "")
-    |> Integer.parse()
-    |> elem(0)
-  end
-
   def parse_type_from_title(title) do
     regex = ~r/\A(?<title>.+)\s(\(\d+.+)(?<type>(#{Enum.join(@service_types, "|")})).+\z/i
     Regex.named_captures(regex, title)

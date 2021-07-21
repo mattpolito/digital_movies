@@ -52,14 +52,6 @@ defmodule DigitalMovies.Stores.UVCodeShop do
     end
   end
 
-  defp parse_product_price(product) do
-    product
-    |> Floki.find(@price_selector)
-    |> Floki.text()
-    |> Integer.parse()
-    |> elem(0)
-  end
-
   def parse_type_from_title(title) do
     regex = ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_types, "|")}))$/i
     Regex.named_captures(regex, title)
