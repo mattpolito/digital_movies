@@ -12,7 +12,7 @@ defmodule DigitalMovies.Stores.InstantDigitalMoviesTest do
              price: 145,
              title: "Daddy's Home 2",
              type: "iTunes 4K",
-             url: "https://instantdigitalmovies.com/daddys-home-2-itunes-4k/"
+             url: "https://instantdigitalmovies.com/daddys-home-2-itunes-4k"
            }
   end
 

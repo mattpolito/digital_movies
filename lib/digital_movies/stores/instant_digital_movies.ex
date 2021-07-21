@@ -31,7 +31,7 @@ defmodule DigitalMovies.Stores.InstantDigitalMovies do
     case parse_type_from_title(title) do
       %{"title" => title, "type" => type} ->
         %{
-          title: title,
+          title: String.trim(title),
           type: type
         }
 
@@ -53,5 +53,6 @@ defmodule DigitalMovies.Stores.InstantDigitalMovies do
     |> Floki.find(@product_url_selector)
     |> Floki.attribute("href")
     |> List.first()
+    |> String.replace_suffix("/", "")
   end
 end
