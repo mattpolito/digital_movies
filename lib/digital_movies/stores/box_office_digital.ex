@@ -15,6 +15,7 @@ defmodule DigitalMovies.Stores.BoxOfficeDigital do
     %{title: title, type: type} = parse_product_title(product)
 
     %Product{
+      available: true,
       price: parse_product_price(product),
       title: title,
       type: type,

@@ -9,6 +9,7 @@ defmodule DigitalMovies.Stores.BoxOfficeDigitalTest do
     {:ok, product} = Floki.parse_document(product_fixture)
 
     assert BoxOfficeDigital.parse_product(product) == %Product{
+             available: true,
              price: 190,
              title: "Fifty Shades Darker",
              type: "iTunes 4K",

@@ -9,6 +9,7 @@ defmodule DigitalMovies.Stores.HappyWatchingTest do
     {:ok, product} = Floki.parse_document(product_fixture)
 
     assert HappyWatching.parse_product(product) == %Product{
+             available: false,
              price: 145,
              title: "Jack Reacher Never Go Back",
              type: "4K iTunes",

@@ -9,6 +9,7 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStoreTest do
     {:ok, product} = Floki.parse_document(product_fixture)
 
     assert UltravioletDigitalStore.parse_product(product) == %Product{
+             available: true,
              price: 210,
              title: "Paranormal Activity 3 [Unrated Edition]",
              type: "iTunes HD",

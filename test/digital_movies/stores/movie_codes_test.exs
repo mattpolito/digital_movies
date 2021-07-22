@@ -9,6 +9,7 @@ defmodule DigitalMovies.Stores.MovieCodesTest do
     {:ok, product} = Floki.parse_document(product_fixture)
 
     assert MovieCodes.parse_product(product) == %Product{
+             available: true,
              price: 125,
              title: "Transformers The Last Knight",
              type: "itunes 4K UHD",

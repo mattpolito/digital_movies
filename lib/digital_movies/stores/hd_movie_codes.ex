@@ -2,6 +2,7 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
   alias DigitalMovies.Product
   alias DigitalMovies.Store, as: MovieStore
 
+  @availability_selector "[itemprop='itemCondition']"
   @products_selector ".products [itemprop='itemListElement']"
   @title_selector "[itemprop='name']"
   @price_selector "[itemprop='price']"
@@ -22,6 +23,7 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
     %{title: title, type: type} = parse_product_title(product)
 
     %Product{
+      available: parse_product_availability(product),
       title: title,
       price: parse_product_price(product),
       type: type,
@@ -63,5 +65,13 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
     |> String.replace(~r/[^\d]/, "")
     |> Integer.parse()
     |> elem(0)
+  end
+
+  def parse_product_availability(product) do
+    product
+    |> Floki.find(@availability_selector)
+    |> Floki.text()
+    |> String.match?(~r/Sold Out/)
+    |> Kernel.not()
   end
 end

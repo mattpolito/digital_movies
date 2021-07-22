@@ -9,6 +9,7 @@ defmodule DigitalMovies.Stores.UVCodeShopTest do
     {:ok, product} = Floki.parse_document(product_fixture)
 
     assert UVCodeShop.parse_product(product) == %Product{
+             available: true,
              price: 125,
              title: "Sherlock Gnomes",
              type: "itunes 4K UHD",

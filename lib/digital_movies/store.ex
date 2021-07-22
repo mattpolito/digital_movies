@@ -15,6 +15,8 @@ defmodule DigitalMovies.Store do
       def parse_product_url(product),
         do: DigitalMovies.Store.parse_product_url(__MODULE__, product)
 
+      def available?(product), do: DigitalMovies.Store.available?(__MODULE__, product)
+
       def price_selector, do: @price_selector
       def product_url_selector, do: @product_url_selector
       def products_selector, do: @products_selector
@@ -29,6 +31,7 @@ defmodule DigitalMovies.Store do
     document
     |> Floki.find(module.products_selector)
     |> Enum.map(&module.parse_product/1)
+    |> Enum.filter(&module.available?/1)
   end
 
   def parse_product_url(module, product) do
@@ -50,5 +53,9 @@ defmodule DigitalMovies.Store do
     |> String.replace(~r/[^\d]/, "")
     |> Integer.parse()
     |> elem(0)
+  end
+
+  def available?(_module, product) do
+    product.available
   end
 end

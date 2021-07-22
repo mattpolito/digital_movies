@@ -2,6 +2,7 @@ defmodule DigitalMovies.Stores.MovieCodes do
   alias DigitalMovies.Product
   alias DigitalMovies.Store, as: MovieStore
 
+  @availability_selector "[data-price]"
   @price_selector "[data-sale-price]"
   @product_url_selector "a.grid-view-item__link"
   @products_selector ".grid--view-items .grid__item"
@@ -33,6 +34,7 @@ defmodule DigitalMovies.Stores.MovieCodes do
     %{title: title, type: type} = parse_product_title(product)
 
     %Product{
+      available: parse_product_availability(product),
       price: parse_product_price(product),
       title: title,
       type: type,
@@ -64,5 +66,13 @@ defmodule DigitalMovies.Stores.MovieCodes do
   def parse_type_from_title(title) do
     regex = ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_types, "|")}))$/i
     Regex.named_captures(regex, String.trim(title))
+  end
+
+  def parse_product_availability(product) do
+    product
+    |> Floki.find(@availability_selector)
+    |> Floki.text()
+    |> String.match?(~r/Sold Out/i)
+    |> Kernel.not()
   end
 end

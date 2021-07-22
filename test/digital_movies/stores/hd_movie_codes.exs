@@ -9,6 +9,7 @@ defmodule DigitalMovies.Stores.HDMovieCodesTest do
     {:ok, product} = Floki.parse_document(product_fixture)
 
     assert HDMovieCodes.parse_product(product) == %Product{
+             available: true,
              price: 395,
              title: "Aloha",
              type: "VUDU HD or iTunes HD via Movies Anywhere",

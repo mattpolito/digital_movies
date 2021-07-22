@@ -9,6 +9,7 @@ defmodule DigitalMovies.Stores.InstantDigitalMoviesTest do
     {:ok, product} = Floki.parse_document(product_fixture)
 
     assert InstantDigitalMovies.parse_product(product) == %Product{
+             available: true,
              price: 145,
              title: "Daddy's Home 2",
              type: "iTunes 4K",
