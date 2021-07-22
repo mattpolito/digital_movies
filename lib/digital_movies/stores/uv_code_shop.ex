@@ -20,37 +20,66 @@ defmodule DigitalMovies.Stores.UVCodeShop do
   use MovieStore
 
   @impl MovieStore
-  def parse_product(product) do
-    %{title: title, type: type} = parse_product_title(product)
-
-    %Product{
-      available: true,
-      price: parse_product_price(product),
-      title: title,
-      type: type,
-      url: parse_product_url(product)
-    }
+  def parse_product(product_markup) do
+    %Product{available: true}
+    |> parse_product_price(product_markup)
+    |> parse_product_url(product_markup)
+    |> parse_product_title(product_markup)
+    |> parse_product_type()
   end
 
-  defp parse_product_title(product) do
+  def parse_product_price(product, product_markup) do
+    price =
+      product_markup
+      |> Floki.find(@price_selector)
+      |> Floki.text()
+      |> String.replace(~r/[^\d]/, "")
+      |> Integer.parse()
+      |> elem(0)
+
+    %Product{product | price: price}
+  end
+
+  def parse_product_url(product, product_markup) do
+    path =
+      product_markup
+      |> Floki.find(@product_url_selector)
+      |> Floki.attribute("href")
+      |> List.first()
+
+    %URI{host: host, scheme: scheme} = URI.parse(@url)
+
+    url = "#{scheme}://#{host}#{path}"
+
+    %Product{product | url: url}
+  end
+
+  def parse_product_title(product, product_markup) do
     title =
-      product
+      product_markup
       |> Floki.find(@title_selector)
       |> Floki.text()
 
-    case parse_type_from_title(title) do
-      %{"title" => title, "type" => type} ->
-        %{
-          title: title,
-          type: type
-        }
+    %Product{product | title: title}
+  end
 
-      _ ->
-        %{
-          title: title,
-          type: nil
-        }
-    end
+  def parse_product_type(product) do
+    %{title: title, type: type} =
+      case parse_type_from_title(product.title) do
+        %{"title" => title, "type" => type} ->
+          %{
+            title: title,
+            type: type
+          }
+
+        _ ->
+          %{
+            title: product.title,
+            type: nil
+          }
+      end
+
+    %Product{product | title: title, type: type}
   end
 
   def parse_type_from_title(title) do
