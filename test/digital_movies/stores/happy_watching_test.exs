@@ -23,8 +23,8 @@ defmodule DigitalMovies.Stores.HappyWatchingTest do
       title = "Jack Reacher Never Back Down HD iTunes"
 
       assert HappyWatching.parse_type_from_title(title) == %{
-               "title" => "Jack Reacher Never Back Down",
-               "type" => "HD iTunes"
+               title: "Jack Reacher Never Back Down",
+               type: "HD iTunes"
              }
     end
 
@@ -32,8 +32,8 @@ defmodule DigitalMovies.Stores.HappyWatchingTest do
       title = "Jack Reacher Never Back Down 4K iTunes"
 
       assert HappyWatching.parse_type_from_title(title) == %{
-               "title" => "Jack Reacher Never Back Down",
-               "type" => "4K iTunes"
+               title: "Jack Reacher Never Back Down",
+               type: "4K iTunes"
              }
     end
 
@@ -41,8 +41,8 @@ defmodule DigitalMovies.Stores.HappyWatchingTest do
       title = "Jack Reacher Never Back Down HDX VUDU & HD iTunes (Full Code!)"
 
       assert HappyWatching.parse_type_from_title(title) == %{
-               "title" => "Jack Reacher Never Back Down",
-               "type" => "HDX VUDU & HD iTunes (Full Code!)"
+               title: "Jack Reacher Never Back Down",
+               type: "HDX VUDU & HD iTunes (Full Code!)"
              }
     end
   end

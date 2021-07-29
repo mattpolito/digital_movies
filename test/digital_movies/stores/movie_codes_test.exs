@@ -23,8 +23,8 @@ defmodule DigitalMovies.Stores.MovieCodesTest do
       title = "Jack Reacher Never Back Down itunes HD"
 
       assert MovieCodes.parse_type_from_title(title) == %{
-               "title" => "Jack Reacher Never Back Down",
-               "type" => "itunes HD"
+               title: "Jack Reacher Never Back Down",
+               type: "itunes HD"
              }
     end
 
@@ -32,8 +32,8 @@ defmodule DigitalMovies.Stores.MovieCodesTest do
       title = "Jack Reacher Never Back Down itunes 4K"
 
       assert MovieCodes.parse_type_from_title(title) == %{
-               "title" => "Jack Reacher Never Back Down",
-               "type" => "itunes 4K"
+               title: "Jack Reacher Never Back Down",
+               type: "itunes 4K"
              }
     end
 
@@ -41,8 +41,8 @@ defmodule DigitalMovies.Stores.MovieCodesTest do
       title = "Jack Reacher Never Back Down HD VUDU (Must redeem in VUDU)"
 
       assert MovieCodes.parse_type_from_title(title) == %{
-               "title" => "Jack Reacher Never Back Down",
-               "type" => "HD VUDU (Must redeem in VUDU)"
+               title: "Jack Reacher Never Back Down",
+               type: "HD VUDU (Must redeem in VUDU)"
              }
     end
   end

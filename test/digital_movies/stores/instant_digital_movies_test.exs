@@ -22,8 +22,8 @@ defmodule DigitalMovies.Stores.InstantDigitalMoviesTest do
       title = "Aloha [iTunes HD]"
 
       assert InstantDigitalMovies.parse_type_from_title(title) == %{
-               "title" => "Aloha",
-               "type" => "iTunes HD"
+               title: "Aloha",
+               type: "iTunes HD"
              }
     end
 
@@ -31,8 +31,8 @@ defmodule DigitalMovies.Stores.InstantDigitalMoviesTest do
       title = "Aloha [iTunes 4K]"
 
       assert InstantDigitalMovies.parse_type_from_title(title) == %{
-               "title" => "Aloha",
-               "type" => "iTunes 4K"
+               title: "Aloha",
+               type: "iTunes 4K"
              }
     end
   end

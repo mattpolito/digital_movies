@@ -28,29 +28,10 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStore do
     }
   end
 
-  defp parse_product_title(product) do
-    title =
-      product
-      |> Floki.find(@title_selector)
-      |> Floki.text()
-
-    case parse_type_from_title(title) do
-      %{"title" => title, "type" => type} ->
-        %{
-          title: String.trim(title),
-          type: type
-        }
-
-      _ ->
-        %{
-          title: title,
-          type: nil
-        }
-    end
-  end
-
   def parse_type_from_title(title) do
     regex = ~r/\A(?<title>.+)\s(\(\d+.+)(?<type>(#{Enum.join(@service_types, "|")})).+\z/i
+
     Regex.named_captures(regex, title)
+    |> extract_title_and_type(title)
   end
 end

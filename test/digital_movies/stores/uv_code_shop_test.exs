@@ -23,8 +23,8 @@ defmodule DigitalMovies.Stores.UVCodeShopTest do
       title = "12 Strong HDX or itunes HD via MA"
 
       assert UVCodeShop.parse_type_from_title(title) == %{
-               "title" => "12 Strong",
-               "type" => "HDX or itunes HD via MA"
+               title: "12 Strong",
+               type: "HDX or itunes HD via MA"
              }
     end
 
@@ -32,8 +32,8 @@ defmodule DigitalMovies.Stores.UVCodeShopTest do
       title = "10 Cloverfield Lane itunes 4K UHD (Does not port)"
 
       assert UVCodeShop.parse_type_from_title(title) == %{
-               "title" => "10 Cloverfield Lane",
-               "type" => "itunes 4K UHD (Does not port)"
+               title: "10 Cloverfield Lane",
+               type: "itunes 4K UHD (Does not port)"
              }
     end
 
@@ -41,8 +41,8 @@ defmodule DigitalMovies.Stores.UVCodeShopTest do
       title = "Godzilla Vs Kong HD VUDU/MA or itunes HD via MA"
 
       assert UVCodeShop.parse_type_from_title(title) == %{
-               "title" => "Godzilla Vs Kong",
-               "type" => "HD VUDU/MA or itunes HD via MA"
+               title: "Godzilla Vs Kong",
+               type: "HD VUDU/MA or itunes HD via MA"
              }
     end
   end

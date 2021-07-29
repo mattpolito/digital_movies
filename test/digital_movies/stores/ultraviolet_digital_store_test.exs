@@ -23,8 +23,8 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStoreTest do
       title = "Paranormal Activity 3 [Unrated Edition] (2011) iTunes HD redemption only"
 
       assert UltravioletDigitalStore.parse_type_from_title(title) == %{
-               "title" => "Paranormal Activity 3 [Unrated Edition]",
-               "type" => "iTunes HD"
+               title: "Paranormal Activity 3 [Unrated Edition]",
+               type: "iTunes HD"
              }
     end
 
@@ -32,8 +32,8 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStoreTest do
       title = "Mission: Impossible - Fallout (2018) iTunes 4K redemption only"
 
       assert UltravioletDigitalStore.parse_type_from_title(title) == %{
-               "title" => "Mission: Impossible - Fallout",
-               "type" => "iTunes 4K"
+               title: "Mission: Impossible - Fallout",
+               type: "iTunes 4K"
              }
     end
 
@@ -41,8 +41,8 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStoreTest do
       title = "The Mummy: Tomb of the Dragon Emperor (2008: Ports Via MA) iTunes 4K code"
 
       assert UltravioletDigitalStore.parse_type_from_title(title) == %{
-               "title" => "The Mummy: Tomb of the Dragon Emperor",
-               "type" => "iTunes 4K"
+               title: "The Mummy: Tomb of the Dragon Emperor",
+               type: "iTunes 4K"
              }
     end
 
@@ -50,8 +50,8 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStoreTest do
       title = "13 Hours: The Secret Soldiers of Benghazi (2016) Vudu 4K or iTunes 4K code"
 
       assert UltravioletDigitalStore.parse_type_from_title(title) == %{
-               "title" => "13 Hours: The Secret Soldiers of Benghazi",
-               "type" => "iTunes 4K"
+               title: "13 Hours: The Secret Soldiers of Benghazi",
+               type: "iTunes 4K"
              }
     end
   end

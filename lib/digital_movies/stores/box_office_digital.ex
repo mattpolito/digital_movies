@@ -23,30 +23,11 @@ defmodule DigitalMovies.Stores.BoxOfficeDigital do
     }
   end
 
-  defp parse_product_title(product) do
-    title =
-      product
-      |> Floki.find(@title_selector)
-      |> Floki.text()
-
-    case parse_type_from_title(title) do
-      %{"title" => title, "type" => type} ->
-        %{
-          title: title,
-          type: type
-        }
-
-      _ ->
-        %{
-          title: title,
-          type: nil
-        }
-    end
-  end
-
   def parse_type_from_title(title) do
     regex = ~r/^(?<title>.+)\s\[(?<type>.+)\]/i
+
     Regex.named_captures(regex, title)
+    |> extract_title_and_type(title)
   end
 
   defp parse_product_url(product) do

@@ -33,27 +33,6 @@ defmodule DigitalMovies.Stores.HappyWatching do
     }
   end
 
-  defp parse_product_title(product) do
-    title =
-      product
-      |> Floki.find(@title_selector)
-      |> Floki.text()
-
-    case parse_type_from_title(title) do
-      %{"title" => title, "type" => type} ->
-        %{
-          title: title,
-          type: type
-        }
-
-      _ ->
-        %{
-          title: title,
-          type: nil
-        }
-    end
-  end
-
   def parse_product_price(product) do
     product
     |> Floki.find(@price_selector)
@@ -66,7 +45,9 @@ defmodule DigitalMovies.Stores.HappyWatching do
 
   def parse_type_from_title(title) do
     regex = ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_types, "|")}))$/i
+
     Regex.named_captures(regex, title)
+    |> extract_title_and_type(title)
   end
 
   def parse_product_availability(product) do

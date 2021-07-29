@@ -9,6 +9,9 @@ defmodule DigitalMovies.Store do
 
       def parse(document), do: DigitalMovies.Store.parse(__MODULE__, document)
 
+      def parse_product_title(product),
+        do: DigitalMovies.Store.parse_product_title(__MODULE__, product)
+
       def parse_product_price(product),
         do: DigitalMovies.Store.parse_product_price(__MODULE__, product)
 
@@ -20,9 +23,13 @@ defmodule DigitalMovies.Store do
       def product_type_is_itunes?(type),
         do: DigitalMovies.Store.product_type_is_itunes?(__MODULE__, type)
 
+      def extract_title_and_type(map, original_title),
+        do: DigitalMovies.Store.extract_title_and_type(__MODULE__, map, original_title)
+
       def price_selector, do: @price_selector
       def product_url_selector, do: @product_url_selector
       def products_selector, do: @products_selector
+      def product_title_selector, do: @title_selector
       def url, do: @url
 
       defoverridable parse_product_price: 1
@@ -35,6 +42,13 @@ defmodule DigitalMovies.Store do
     |> Floki.find(module.products_selector)
     |> Enum.map(&module.parse_product/1)
     |> Enum.filter(&module.available?/1)
+  end
+
+  def parse_product_title(module, product) do
+    product
+    |> Floki.find(module.product_title_selector)
+    |> Floki.text()
+    |> module.parse_type_from_title()
   end
 
   def parse_product_url(module, product) do
@@ -66,5 +80,19 @@ defmodule DigitalMovies.Store do
 
   def product_type_is_itunes?(_module, type) do
     Regex.match?(~r/itunes/i, type)
+  end
+
+  def extract_title_and_type(_module, nil, original_title) do
+    %{
+      title: String.trim(original_title),
+      type: nil
+    }
+  end
+
+  def extract_title_and_type(_module, %{"title" => title, "type" => type}, _original_title) do
+    %{
+      title: String.trim(title),
+      type: String.trim(type)
+    }
   end
 end
