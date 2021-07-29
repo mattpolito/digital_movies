@@ -40,10 +40,6 @@ defmodule DigitalMovies.Stores.UVDigitalNow do
     |> categorize_type
   end
 
-  def categorize_type(%{type: nil} = title_and_type) do
-    title_and_type
-  end
-
   def categorize_type(%{type: type} = title_and_type) do
     categorized_type =
       cond do

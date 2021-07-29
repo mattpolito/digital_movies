@@ -12,7 +12,7 @@ defmodule DigitalMovies.Stores.HappyWatchingTest do
              available: false,
              price: 145,
              title: "Jack Reacher Never Go Back",
-             type: "4K iTunes",
+             type: "iTunes 4K",
              url:
                "https://happywatching.com/collections/itunes/products/jack-reacher-never-go-back-hd-itunes"
            }
@@ -24,7 +24,7 @@ defmodule DigitalMovies.Stores.HappyWatchingTest do
 
       assert HappyWatching.parse_type_from_title(title) == %{
                title: "Jack Reacher Never Back Down",
-               type: "HD iTunes"
+               type: "iTunes HD"
              }
     end
 
@@ -33,7 +33,7 @@ defmodule DigitalMovies.Stores.HappyWatchingTest do
 
       assert HappyWatching.parse_type_from_title(title) == %{
                title: "Jack Reacher Never Back Down",
-               type: "4K iTunes"
+               type: "iTunes 4K"
              }
     end
 
@@ -42,7 +42,7 @@ defmodule DigitalMovies.Stores.HappyWatchingTest do
 
       assert HappyWatching.parse_type_from_title(title) == %{
                title: "Jack Reacher Never Back Down",
-               type: "HDX VUDU & HD iTunes (Full Code!)"
+               type: "iTunes HD"
              }
     end
   end

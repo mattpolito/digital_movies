@@ -37,27 +37,4 @@ defmodule DigitalMovies.Stores.BoxOfficeDigital do
     |> Floki.attribute("href")
     |> List.first()
   end
-
-  def categorize_type(%{type: nil} = title_and_type) do
-    title_and_type
-  end
-
-  def categorize_type(%{type: type} = title_and_type) do
-    categorized_type =
-      cond do
-        String.match?(type, ~r/(?:iTunes SD)/i) ->
-          "iTunes SD"
-
-        String.match?(type, ~r/(?:iTunes HD)/i) ->
-          "iTunes HD"
-
-        String.match?(type, ~r/(?:iTunes 4K)/i) ->
-          "iTunes 4K"
-
-        true ->
-          type
-      end
-
-    %{title_and_type | type: categorized_type}
-  end
 end
