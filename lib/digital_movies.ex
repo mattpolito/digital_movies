@@ -1,12 +1,15 @@
 defmodule DigitalMovies do
+  alias DigitalMovies.Stores
+
   @stores [
-    DigitalMovies.Stores.BoxOfficeDigital,
-    DigitalMovies.Stores.HDMovieCodes,
-    DigitalMovies.Stores.HappyWatching,
-    DigitalMovies.Stores.InstantDigitalMovies,
-    DigitalMovies.Stores.MovieCodes,
-    DigitalMovies.Stores.UVCodeShop,
-    DigitalMovies.Stores.UltravioletDigitalStore
+    Stores.BoxOfficeDigital,
+    Stores.HDMovieCodes,
+    Stores.HappyWatching,
+    Stores.InstantDigitalMovies,
+    Stores.MovieCodes,
+    Stores.UVCodeShop,
+    Stores.UVDigitalNow,
+    Stores.UltravioletDigitalStore
   ]
 
   def run(stores \\ @stores) do

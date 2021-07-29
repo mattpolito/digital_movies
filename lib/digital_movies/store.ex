@@ -17,6 +17,9 @@ defmodule DigitalMovies.Store do
 
       def available?(product), do: DigitalMovies.Store.available?(__MODULE__, product)
 
+      def product_type_is_itunes?(type),
+        do: DigitalMovies.Store.product_type_is_itunes?(__MODULE__, type)
+
       def price_selector, do: @price_selector
       def product_url_selector, do: @product_url_selector
       def products_selector, do: @products_selector
@@ -55,7 +58,13 @@ defmodule DigitalMovies.Store do
     |> elem(0)
   end
 
-  def available?(_module, product) do
-    product.available
+  def available?(module, product) do
+    product.available and module.product_type_is_itunes?(product.type)
+  end
+
+  def product_type_is_itunes?(_module, nil), do: false
+
+  def product_type_is_itunes?(_module, type) do
+    Regex.match?(~r/itunes/i, type)
   end
 end
