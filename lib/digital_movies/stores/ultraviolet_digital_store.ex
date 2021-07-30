@@ -33,5 +33,6 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStore do
 
     Regex.named_captures(regex, title)
     |> extract_title_and_type(title)
+    |> categorize_type()
   end
 end
