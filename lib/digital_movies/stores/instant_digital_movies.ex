@@ -6,6 +6,7 @@ defmodule DigitalMovies.Stores.InstantDigitalMovies do
   @product_url_selector ".product-grid-item-name > a"
   @products_selector ".product-grid .product-grid-item"
   @title_selector ".product-grid-item-name"
+  @title_type_separator_regex ~r/^(?<title>.+)\s\[(?<type>.+)\]/i
   @url "https://instantdigitalmovies.com/formats/itunes/itunes-4k/?sort=priceasc"
 
   use MovieStore
@@ -21,14 +22,6 @@ defmodule DigitalMovies.Stores.InstantDigitalMovies do
       type: type,
       url: parse_product_url(product)
     }
-  end
-
-  def parse_type_from_title(title) do
-    regex = ~r/^(?<title>.+)\s\[(?<type>.+)\]/i
-
-    Regex.named_captures(regex, title)
-    |> extract_title_and_type(title)
-    |> categorize_type()
   end
 
   def parse_product_url(product) do

@@ -7,7 +7,7 @@ defmodule DigitalMovies.Stores.HappyWatching do
   @title_selector ".details h4"
   @price_selector ".details .price"
   @url "https://happywatching.com/collections/itunes?sort_by=price-ascending"
-  @service_types [
+  @service_separators [
     "HDX VUDU & 4K iTunes Full Code",
     Regex.escape("HDX VUDU & HD iTunes (Full Code!)"),
     "SD UV or iTunes via MA",
@@ -17,6 +17,7 @@ defmodule DigitalMovies.Stores.HappyWatching do
     "HD iTunes",
     "iTunes via MA"
   ]
+  @title_type_separator_regex ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i
 
   use MovieStore
 
@@ -41,14 +42,6 @@ defmodule DigitalMovies.Stores.HappyWatching do
     |> String.replace(~r/[^\d]/, "")
     |> Integer.parse()
     |> elem(0)
-  end
-
-  def parse_type_from_title(title) do
-    regex = ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_types, "|")}))$/i
-
-    Regex.named_captures(regex, title)
-    |> extract_title_and_type(title)
-    |> categorize_type()
   end
 
   def parse_product_availability(product) do

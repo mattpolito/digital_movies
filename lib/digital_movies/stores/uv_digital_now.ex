@@ -5,7 +5,7 @@ defmodule DigitalMovies.Stores.UVDigitalNow do
   @price_selector ".product-price"
   @product_url_selector ".product-name a"
   @products_selector ".product-grid-item"
-  @type_seperators [
+  @service_separators [
     Regex.escape("(4K) VUDU"),
     Regex.escape("(4K) iTunes"),
     Regex.escape("(HD) GOOGLE PLAY"),
@@ -15,6 +15,7 @@ defmodule DigitalMovies.Stores.UVDigitalNow do
     Regex.escape("(SD) VUDU")
   ]
   @title_selector ".product-name"
+  @title_type_separator_regex ~r/^(?:\* )?(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}).*)$/
   @url "https://uvdigitalnow.dpdcart.com"
 
   use MovieStore
@@ -30,14 +31,6 @@ defmodule DigitalMovies.Stores.UVDigitalNow do
       type: type,
       url: parse_product_url(product)
     }
-  end
-
-  def parse_type_from_title(title) do
-    regex = ~r/^(?:\* )?(?<title>.+)\s(?<type>(#{Enum.join(@type_seperators, "|")}).*)$/
-
-    Regex.named_captures(regex, title)
-    |> extract_title_and_type(title)
-    |> categorize_type
   end
 
   def normalize_type(type) do

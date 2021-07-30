@@ -5,12 +5,13 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStore do
   @price_selector "[data-sale-price]"
   @product_url_selector ".product-card > a"
   @products_selector ".grid--view-items .grid__item"
-  @service_types [
+  @service_separators [
     "Vudu 4K or iTunes 4K",
     "itunes 4K",
     "itunes HD"
   ]
   @title_selector ".product-card .product-card__title"
+  @title_type_separator_regex ~r/\A(?<title>.+)\s(\(\d+.+)(?<type>(#{Enum.join(@service_separators, "|")})).+\z/i
   @url "https://ultravioletdigitalstore.com/collections/itunes-codes?sort_by=price-ascending"
 
   use MovieStore
@@ -26,13 +27,5 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStore do
       type: type,
       url: parse_product_url(product)
     }
-  end
-
-  def parse_type_from_title(title) do
-    regex = ~r/\A(?<title>.+)\s(\(\d+.+)(?<type>(#{Enum.join(@service_types, "|")})).+\z/i
-
-    Regex.named_captures(regex, title)
-    |> extract_title_and_type(title)
-    |> categorize_type()
   end
 end

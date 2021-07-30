@@ -6,6 +6,7 @@ defmodule DigitalMovies.Stores.BoxOfficeDigital do
   @product_url_selector ".card-figure > a"
   @products_selector "main .productGrid .product"
   @title_selector ".card .card-body .card-title"
+  @title_type_separator_regex ~r/^(?<title>.+)\s\[(?<type>.+)\]/i
   @url "https://boxofficedigital.com/formats/itunes-4k/?sort=priceasc"
 
   use MovieStore
@@ -21,14 +22,6 @@ defmodule DigitalMovies.Stores.BoxOfficeDigital do
       type: type,
       url: parse_product_url(product)
     }
-  end
-
-  def parse_type_from_title(title) do
-    regex = ~r/^(?<title>.+)\s\[(?<type>.+)\]/i
-
-    Regex.named_captures(regex, title)
-    |> extract_title_and_type(title)
-    |> categorize_type()
   end
 
   defp parse_product_url(product) do

@@ -5,7 +5,7 @@ defmodule DigitalMovies.Stores.UVCodeShop do
   @price_selector ".product-item--price"
   @product_url_selector "a.product-grid-item"
   @products_selector ".grid-uniform .grid-item:not(.sold-out)"
-  @service_types [
+  @service_separators [
     Regex.escape("SD VUDU/MA or itunes SD via MA"),
     "SD or itunes SD via MA",
     "HD VUDU/MA or itunes HD via MA",
@@ -15,6 +15,7 @@ defmodule DigitalMovies.Stores.UVCodeShop do
     "itunes HD"
   ]
   @title_selector "p"
+  @title_type_separator_regex ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i
   @url "https://www.uvcodeshop.com/collections/itunes-hd?sort_by=price-ascending"
 
   use MovieStore
@@ -30,13 +31,5 @@ defmodule DigitalMovies.Stores.UVCodeShop do
       type: type,
       url: parse_product_url(product)
     }
-  end
-
-  def parse_type_from_title(title) do
-    regex = ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_types, "|")}))$/i
-
-    Regex.named_captures(regex, title)
-    |> extract_title_and_type(title)
-    |> categorize_type()
   end
 end

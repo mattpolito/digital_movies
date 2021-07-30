@@ -8,13 +8,14 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
   @price_selector "[itemprop='price']"
   @product_url_selector "[itemprop='url']"
   @url "https://hdmoviecodes.com/collections/itunes-hd?sort_by=price-ascending"
-  @service_types [
+  @service_separators [
     "VUDU HD or iTunes HD via Movies Anywhere",
     "VUDU 4K through iTunes 4K",
     "VUDU HD or iTunes HD via MA",
     "iTunes 4K",
     "iTunes HD"
   ]
+  @title_type_separator_regex ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i
 
   use MovieStore
 
@@ -29,14 +30,6 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
       type: type,
       url: parse_product_url(product)
     }
-  end
-
-  def parse_type_from_title(title) do
-    regex = ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_types, "|")}))$/i
-
-    Regex.named_captures(regex, title)
-    |> extract_title_and_type(title)
-    |> categorize_type()
   end
 
   def parse_product_price(product) do

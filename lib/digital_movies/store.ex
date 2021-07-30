@@ -18,6 +18,9 @@ defmodule DigitalMovies.Store do
       def parse_product_url(product),
         do: DigitalMovies.Store.parse_product_url(__MODULE__, product)
 
+      def parse_type_from_title(title),
+        do: DigitalMovies.Store.parse_type_from_title(__MODULE__, title)
+
       def available?(product), do: DigitalMovies.Store.available?(__MODULE__, product)
 
       def product_type_is_itunes?(type),
@@ -35,6 +38,7 @@ defmodule DigitalMovies.Store do
       def product_url_selector, do: @product_url_selector
       def products_selector, do: @products_selector
       def product_title_selector, do: @title_selector
+      def title_type_separator_regex, do: @title_type_separator_regex
       def url, do: @url
 
       defoverridable parse_product_price: 1
@@ -116,5 +120,11 @@ defmodule DigitalMovies.Store do
       true ->
         type
     end
+  end
+
+  def parse_type_from_title(module, title) do
+    Regex.named_captures(module.title_type_separator_regex, String.trim(title))
+    |> module.extract_title_and_type(title)
+    |> module.categorize_type()
   end
 end
