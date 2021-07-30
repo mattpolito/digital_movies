@@ -12,7 +12,7 @@ defmodule DigitalMovies.Stores.UVCodeShopTest do
              available: true,
              price: 125,
              title: "Sherlock Gnomes",
-             type: "itunes 4K UHD",
+             type: "iTunes 4K",
              url:
                "https://www.uvcodeshop.com/collections/itunes-hd/products/sherlock-gnomes-itunes-hd"
            }
@@ -24,7 +24,7 @@ defmodule DigitalMovies.Stores.UVCodeShopTest do
 
       assert UVCodeShop.parse_type_from_title(title) == %{
                title: "12 Strong",
-               type: "HDX or itunes HD via MA"
+               type: "iTunes HD"
              }
     end
 
@@ -33,7 +33,7 @@ defmodule DigitalMovies.Stores.UVCodeShopTest do
 
       assert UVCodeShop.parse_type_from_title(title) == %{
                title: "10 Cloverfield Lane",
-               type: "itunes 4K UHD (Does not port)"
+               type: "iTunes 4K"
              }
     end
 
@@ -42,7 +42,7 @@ defmodule DigitalMovies.Stores.UVCodeShopTest do
 
       assert UVCodeShop.parse_type_from_title(title) == %{
                title: "Godzilla Vs Kong",
-               type: "HD VUDU/MA or itunes HD via MA"
+               type: "iTunes HD"
              }
     end
   end
