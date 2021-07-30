@@ -40,22 +40,19 @@ defmodule DigitalMovies.Stores.UVDigitalNow do
     |> categorize_type
   end
 
-  def categorize_type(%{type: type} = title_and_type) do
-    categorized_type =
-      cond do
-        String.match?(type, ~r/(?:itunes in sd|\(SD\) itunes)/i) ->
-          "iTunes SD"
+  def normalize_type(type) do
+    cond do
+      String.match?(type, ~r/(?:itunes in sd|\(SD\) itunes)/i) ->
+        "iTunes SD"
 
-        String.match?(type, ~r/(?:itunes in hd|\(HD\) iTunes)/i) ->
-          "iTunes HD"
+      String.match?(type, ~r/(?:itunes in hd|\(HD\) iTunes)/i) ->
+        "iTunes HD"
 
-        String.match?(type, ~r/(?:iTunes for 4K|\(4K\) itunes)/i) ->
-          "iTunes 4K"
+      String.match?(type, ~r/(?:iTunes for 4K|\(4K\) itunes)/i) ->
+        "iTunes 4K"
 
-        true ->
-          type
-      end
-
-    %{title_and_type | type: categorized_type}
+      true ->
+        type
+    end
   end
 end

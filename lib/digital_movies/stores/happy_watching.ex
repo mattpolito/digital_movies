@@ -59,22 +59,19 @@ defmodule DigitalMovies.Stores.HappyWatching do
     |> Kernel.not()
   end
 
-  def categorize_type(%{type: type} = title_and_type) do
-    categorized_type =
-      cond do
-        String.match?(type, ~r/(?:iTunes SD)/i) ->
-          "iTunes SD"
+  def normalize_type(type) do
+    cond do
+      String.match?(type, ~r/(?:iTunes SD)/i) ->
+        "iTunes SD"
 
-        String.match?(type, ~r/(?:iTunes HD|HD iTunes)/i) ->
-          "iTunes HD"
+      String.match?(type, ~r/(?:iTunes HD|HD iTunes)/i) ->
+        "iTunes HD"
 
-        String.match?(type, ~r/(?:iTunes 4K|4K iTunes)/i) ->
-          "iTunes 4K"
+      String.match?(type, ~r/(?:iTunes 4K|4K iTunes)/i) ->
+        "iTunes 4K"
 
-        true ->
-          type
-      end
-
-    %{title_and_type | type: categorized_type}
+      true ->
+        type
+    end
   end
 end

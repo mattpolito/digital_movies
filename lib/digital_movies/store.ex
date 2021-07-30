@@ -26,7 +26,10 @@ defmodule DigitalMovies.Store do
       def extract_title_and_type(map, original_title),
         do: DigitalMovies.Store.extract_title_and_type(__MODULE__, map, original_title)
 
-      def categorize_type(type), do: DigitalMovies.Store.categorize_type(__MODULE__, type)
+      def categorize_type(%{type: nil} = map), do: map
+      def categorize_type(%{type: type} = map), do: %{map | type: normalize_type(type)}
+
+      def normalize_type(type), do: DigitalMovies.Store.normalize_type(type)
 
       def price_selector, do: @price_selector
       def product_url_selector, do: @product_url_selector
@@ -36,7 +39,7 @@ defmodule DigitalMovies.Store do
 
       defoverridable parse_product_price: 1
       defoverridable parse_product_url: 1
-      defoverridable categorize_type: 1
+      defoverridable normalize_type: 1
     end
   end
 
@@ -99,26 +102,19 @@ defmodule DigitalMovies.Store do
     }
   end
 
-  def categorize_type(_module, %{type: nil} = title_and_type) do
-    title_and_type
-  end
+  def normalize_type(type) do
+    cond do
+      String.match?(type, ~r/(?:iTunes SD)/i) ->
+        "iTunes SD"
 
-  def categorize_type(_module, %{type: type} = title_and_type) do
-    categorized_type =
-      cond do
-        String.match?(type, ~r/(?:iTunes SD)/i) ->
-          "iTunes SD"
+      String.match?(type, ~r/(?:iTunes HD)/i) ->
+        "iTunes HD"
 
-        String.match?(type, ~r/(?:iTunes HD)/i) ->
-          "iTunes HD"
+      String.match?(type, ~r/(?:iTunes 4K)/i) ->
+        "iTunes 4K"
 
-        String.match?(type, ~r/(?:iTunes 4K)/i) ->
-          "iTunes 4K"
-
-        true ->
-          type
-      end
-
-    %{title_and_type | type: categorized_type}
+      true ->
+        type
+    end
   end
 end
