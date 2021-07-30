@@ -7,9 +7,9 @@ defmodule DigitalMovies.Stores.InstantDigitalMovies do
   @products_selector ".product-grid .product-grid-item"
   @title_selector ".product-grid-item-name"
   @title_type_separator_regex ~r/^(?<title>.+)\s\[(?<type>.+)\]/i
-  @url "https://instantdigitalmovies.com/formats/itunes/itunes-4k/?sort=priceasc"
 
-  use MovieStore
+  use MovieStore,
+    url: "https://instantdigitalmovies.com/formats/itunes/itunes-4k/?sort=priceasc"
 
   @impl MovieStore
   def parse_product(product) do

@@ -6,7 +6,6 @@ defmodule DigitalMovies.Stores.HappyWatching do
   @product_url_selector ".details > a"
   @title_selector ".details h4"
   @price_selector ".details .price"
-  @url "https://happywatching.com/collections/itunes?sort_by=price-ascending"
   @service_separators [
     "HDX VUDU & 4K iTunes Full Code",
     Regex.escape("HDX VUDU & HD iTunes (Full Code!)"),
@@ -19,7 +18,8 @@ defmodule DigitalMovies.Stores.HappyWatching do
   ]
   @title_type_separator_regex ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i
 
-  use MovieStore
+  use MovieStore,
+    url: "https://happywatching.com/collections/itunes?sort_by=price-ascending"
 
   @impl MovieStore
   def parse_product(product) do

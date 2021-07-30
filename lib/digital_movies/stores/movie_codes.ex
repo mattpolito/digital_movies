@@ -27,7 +27,8 @@ defmodule DigitalMovies.Stores.MovieCodes do
   @title_selector ".grid-view-item__title"
   @url "https://movie-codes.com/collections/itunes?sort_by=price-ascending"
 
-  use MovieStore
+  use MovieStore,
+    url: "https://movie-codes.com/collections/itunes?sort_by=price-ascending"
 
   @impl MovieStore
   def parse_product(product) do

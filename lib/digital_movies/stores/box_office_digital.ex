@@ -7,9 +7,9 @@ defmodule DigitalMovies.Stores.BoxOfficeDigital do
   @products_selector "main .productGrid .product"
   @title_selector ".card .card-body .card-title"
   @title_type_separator_regex ~r/^(?<title>.+)\s\[(?<type>.+)\]/i
-  @url "https://boxofficedigital.com/formats/itunes-4k/?sort=priceasc"
 
-  use MovieStore
+  use MovieStore,
+    url: "https://boxofficedigital.com/formats/itunes-4k/?sort=priceasc"
 
   @impl MovieStore
   def parse_product(product) do

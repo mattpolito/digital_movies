@@ -16,9 +16,9 @@ defmodule DigitalMovies.Stores.UVDigitalNow do
   ]
   @title_selector ".product-name"
   @title_type_separator_regex ~r/^(?:\* )?(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}).*)$/
-  @url "https://uvdigitalnow.dpdcart.com"
 
-  use MovieStore
+  use MovieStore,
+    url: "https://uvdigitalnow.dpdcart.com"
 
   @impl MovieStore
   def parse_product(product) do

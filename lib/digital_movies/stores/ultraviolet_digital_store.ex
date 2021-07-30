@@ -12,9 +12,9 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStore do
   ]
   @title_selector ".product-card .product-card__title"
   @title_type_separator_regex ~r/\A(?<title>.+)\s(\(\d+.+)(?<type>(#{Enum.join(@service_separators, "|")})).+\z/i
-  @url "https://ultravioletdigitalstore.com/collections/itunes-codes?sort_by=price-ascending"
 
-  use MovieStore
+  use MovieStore,
+    url: "https://ultravioletdigitalstore.com/collections/itunes-codes?sort_by=price-ascending"
 
   @impl MovieStore
   def parse_product(product) do

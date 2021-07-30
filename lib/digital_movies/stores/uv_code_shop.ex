@@ -16,9 +16,9 @@ defmodule DigitalMovies.Stores.UVCodeShop do
   ]
   @title_selector "p"
   @title_type_separator_regex ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i
-  @url "https://www.uvcodeshop.com/collections/itunes-hd?sort_by=price-ascending"
 
-  use MovieStore
+  use MovieStore,
+    url: "https://www.uvcodeshop.com/collections/itunes-hd?sort_by=price-ascending"
 
   @impl MovieStore
   def parse_product(product) do
