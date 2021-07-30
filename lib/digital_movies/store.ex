@@ -2,9 +2,10 @@ defmodule DigitalMovies.Store do
   @callback parse_product(Floki.html_tree()) :: %DigitalMovies.Product{}
   @callback products_selector :: String.t()
 
-  defmacro __using__(opts \\ []) do
+  defmacro __using__(opts) do
     quote bind_quoted: [opts: opts] do
       @url Keyword.fetch!(opts, :url)
+      @products_selector Keyword.fetch!(opts, :products_selector)
 
       @behaviour DigitalMovies.Store
 

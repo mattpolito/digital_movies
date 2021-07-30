@@ -3,7 +3,6 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
   alias DigitalMovies.Store, as: MovieStore
 
   @availability_selector "[itemprop='itemCondition']"
-  @products_selector ".products [itemprop='itemListElement']"
   @title_selector "[itemprop='name']"
   @price_selector "[itemprop='price']"
   @product_url_selector "[itemprop='url']"
@@ -17,6 +16,7 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
   @title_type_separator_regex ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i
 
   use MovieStore,
+    products_selector: ".products [itemprop='itemListElement']",
     url: "https://hdmoviecodes.com/collections/itunes-hd?sort_by=price-ascending"
 
   @impl MovieStore

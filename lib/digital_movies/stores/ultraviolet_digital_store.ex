@@ -4,7 +4,6 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStore do
 
   @price_selector "[data-sale-price]"
   @product_url_selector ".product-card > a"
-  @products_selector ".grid--view-items .grid__item"
   @service_separators [
     "Vudu 4K or iTunes 4K",
     "itunes 4K",
@@ -14,6 +13,7 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStore do
   @title_type_separator_regex ~r/\A(?<title>.+)\s(\(\d+.+)(?<type>(#{Enum.join(@service_separators, "|")})).+\z/i
 
   use MovieStore,
+    products_selector: ".grid--view-items .grid__item",
     url: "https://ultravioletdigitalstore.com/collections/itunes-codes?sort_by=price-ascending"
 
   @impl MovieStore

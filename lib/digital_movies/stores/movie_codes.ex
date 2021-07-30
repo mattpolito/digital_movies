@@ -5,7 +5,6 @@ defmodule DigitalMovies.Stores.MovieCodes do
   @availability_selector "[data-price]"
   @price_selector "[data-sale-price]"
   @product_url_selector "a.grid-view-item__link"
-  @products_selector ".grid--view-items .grid__item"
   @service_types [
     Regex.escape("HD VUDU (Must redeem in VUDU)"),
     Regex.escape("HD VUDU/MA or itunes HD via MA"),
@@ -28,6 +27,7 @@ defmodule DigitalMovies.Stores.MovieCodes do
   @url "https://movie-codes.com/collections/itunes?sort_by=price-ascending"
 
   use MovieStore,
+    products_selector: ".grid--view-items .grid__item",
     url: "https://movie-codes.com/collections/itunes?sort_by=price-ascending"
 
   @impl MovieStore

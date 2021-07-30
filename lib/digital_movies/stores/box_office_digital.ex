@@ -4,12 +4,13 @@ defmodule DigitalMovies.Stores.BoxOfficeDigital do
 
   @price_selector ".card .card-body .price-section .price.price--withoutTax"
   @product_url_selector ".card-figure > a"
-  @products_selector "main .productGrid .product"
   @title_selector ".card .card-body .card-title"
   @title_type_separator_regex ~r/^(?<title>.+)\s\[(?<type>.+)\]/i
 
-  use MovieStore,
-    url: "https://boxofficedigital.com/formats/itunes-4k/?sort=priceasc"
+  use MovieStore, [
+    products_selector: "main .productGrid .product",
+    url: "https://boxofficedigital.com/formats/itunes-4k/?sort=priceasc",
+  ]
 
   @impl MovieStore
   def parse_product(product) do

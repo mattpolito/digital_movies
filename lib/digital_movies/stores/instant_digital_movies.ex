@@ -4,11 +4,11 @@ defmodule DigitalMovies.Stores.InstantDigitalMovies do
 
   @price_selector ".price-value"
   @product_url_selector ".product-grid-item-name > a"
-  @products_selector ".product-grid .product-grid-item"
   @title_selector ".product-grid-item-name"
   @title_type_separator_regex ~r/^(?<title>.+)\s\[(?<type>.+)\]/i
 
   use MovieStore,
+    products_selector: ".product-grid .product-grid-item",
     url: "https://instantdigitalmovies.com/formats/itunes/itunes-4k/?sort=priceasc"
 
   @impl MovieStore

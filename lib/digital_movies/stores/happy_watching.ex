@@ -2,7 +2,6 @@ defmodule DigitalMovies.Stores.HappyWatching do
   alias DigitalMovies.Product
   alias DigitalMovies.Store, as: MovieStore
 
-  @products_selector ".products .product"
   @product_url_selector ".details > a"
   @title_selector ".details h4"
   @price_selector ".details .price"
@@ -19,6 +18,7 @@ defmodule DigitalMovies.Stores.HappyWatching do
   @title_type_separator_regex ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i
 
   use MovieStore,
+    products_selector: ".grid-uniform .grid-item:not(.sold-out)",
     url: "https://happywatching.com/collections/itunes?sort_by=price-ascending"
 
   @impl MovieStore

@@ -4,7 +4,6 @@ defmodule DigitalMovies.Stores.UVDigitalNow do
 
   @price_selector ".product-price"
   @product_url_selector ".product-name a"
-  @products_selector ".product-grid-item"
   @service_separators [
     Regex.escape("(4K) VUDU"),
     Regex.escape("(4K) iTunes"),
@@ -18,6 +17,7 @@ defmodule DigitalMovies.Stores.UVDigitalNow do
   @title_type_separator_regex ~r/^(?:\* )?(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}).*)$/
 
   use MovieStore,
+    products_selector: ".product-grid-item",
     url: "https://uvdigitalnow.dpdcart.com"
 
   @impl MovieStore
