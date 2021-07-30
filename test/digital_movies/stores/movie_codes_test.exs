@@ -12,7 +12,7 @@ defmodule DigitalMovies.Stores.MovieCodesTest do
              available: true,
              price: 125,
              title: "Transformers The Last Knight",
-             type: "itunes 4K UHD",
+             type: "iTunes 4K",
              url:
                "https://movie-codes.com/collections/itunes/products/transformers-the-last-knight-itunes-4k-uhd"
            }
@@ -24,7 +24,7 @@ defmodule DigitalMovies.Stores.MovieCodesTest do
 
       assert MovieCodes.parse_type_from_title(title) == %{
                title: "Jack Reacher Never Back Down",
-               type: "itunes HD"
+               type: "iTunes HD"
              }
     end
 
@@ -33,7 +33,7 @@ defmodule DigitalMovies.Stores.MovieCodesTest do
 
       assert MovieCodes.parse_type_from_title(title) == %{
                title: "Jack Reacher Never Back Down",
-               type: "itunes 4K"
+               type: "iTunes 4K"
              }
     end
 

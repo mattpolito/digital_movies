@@ -47,6 +47,7 @@ defmodule DigitalMovies.Stores.MovieCodes do
 
     Regex.named_captures(regex, String.trim(title))
     |> extract_title_and_type(title)
+    |> categorize_type()
   end
 
   def parse_product_availability(product) do
@@ -55,5 +56,21 @@ defmodule DigitalMovies.Stores.MovieCodes do
     |> Floki.text()
     |> String.match?(~r/Sold Out/i)
     |> Kernel.not()
+  end
+
+  def normalize_type(type) do
+    cond do
+      String.match?(type, ~r/(?:iTunes SD)/i) ->
+        "iTunes SD"
+
+      String.match?(type, ~r/(?:iTunes HD|\(HD\) itunes|HDX or itunes)/i) ->
+        "iTunes HD"
+
+      String.match?(type, ~r/(?:iTunes 4K)/i) ->
+        "iTunes 4K"
+
+      true ->
+        type
+    end
   end
 end
