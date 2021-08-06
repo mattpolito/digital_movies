@@ -2,8 +2,6 @@ defmodule DigitalMovies.Stores.UVCodeShop do
   alias DigitalMovies.Product
   alias DigitalMovies.Store, as: MovieStore
 
-  @price_selector ".product-item--price"
-  @product_url_selector "a.product-grid-item"
   @service_separators [
     Regex.escape("SD VUDU/MA or itunes SD via MA"),
     "SD or itunes SD via MA",
@@ -13,10 +11,12 @@ defmodule DigitalMovies.Stores.UVCodeShop do
     "itunes 4K UHD",
     "itunes HD"
   ]
-  @title_selector "p"
-  @title_type_separator_regex ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i
 
   use MovieStore,
+    product_price_selector: ".product-item--price",
+    product_title_selector: "p",
+    product_title_separator_regex: ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i,
+    product_url_selector: "a.product-grid-item",
     products_selector: ".grid-uniform .grid-item:not(.sold-out)",
     url: "https://www.uvcodeshop.com/collections/itunes-hd?sort_by=price-ascending"
 

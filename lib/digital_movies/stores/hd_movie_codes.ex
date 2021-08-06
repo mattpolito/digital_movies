@@ -3,9 +3,6 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
   alias DigitalMovies.Store, as: MovieStore
 
   @availability_selector "[itemprop='itemCondition']"
-  @title_selector "[itemprop='name']"
-  @price_selector "[itemprop='price']"
-  @product_url_selector "[itemprop='url']"
   @service_separators [
     "VUDU HD or iTunes HD via Movies Anywhere",
     "VUDU 4K through iTunes 4K",
@@ -13,9 +10,13 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
     "iTunes 4K",
     "iTunes HD"
   ]
-  @title_type_separator_regex ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i
 
   use MovieStore,
+    product_price_selector: "[itemprop='price']",
+    product_title_selector: "[itemprop='name']",
+    product_title_separator_regex:
+      ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i,
+    product_url_selector: "[itemprop='url']",
     products_selector: ".products [itemprop='itemListElement']",
     url: "https://hdmoviecodes.com/collections/itunes-hd?sort_by=price-ascending"
 
@@ -34,7 +35,7 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
 
   def parse_product_price(product) do
     product
-    |> Floki.find(@price_selector)
+    |> Floki.find(@product_price_selector)
     |> Floki.attribute("content")
     |> List.first()
     |> String.replace(~r/[^\d]/, "")

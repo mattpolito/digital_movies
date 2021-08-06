@@ -4,8 +4,12 @@ defmodule DigitalMovies.Store do
 
   defmacro __using__(opts) do
     quote bind_quoted: [opts: opts] do
-      @url Keyword.fetch!(opts, :url)
+      @product_price_selector Keyword.fetch!(opts, :product_price_selector)
+      @product_title_selector Keyword.fetch!(opts, :product_title_selector)
+      @product_title_separator_regex Keyword.fetch!(opts, :product_title_separator_regex)
+      @product_url_selector Keyword.fetch!(opts, :product_url_selector)
       @products_selector Keyword.fetch!(opts, :products_selector)
+      @url Keyword.fetch!(opts, :url)
 
       @behaviour DigitalMovies.Store
 
@@ -36,11 +40,11 @@ defmodule DigitalMovies.Store do
 
       def normalize_type(type), do: DigitalMovies.Store.normalize_type(type)
 
-      def price_selector, do: @price_selector
+      def product_price_selector, do: @product_price_selector
+      def product_title_selector, do: @product_title_selector
+      def product_title_separator_regex, do: @product_title_separator_regex
       def product_url_selector, do: @product_url_selector
       def products_selector, do: @products_selector
-      def product_title_selector, do: @title_selector
-      def title_type_separator_regex, do: @title_type_separator_regex
       def url, do: @url
 
       defoverridable parse_product_price: 1
@@ -77,7 +81,7 @@ defmodule DigitalMovies.Store do
 
   def parse_product_price(module, product) do
     product
-    |> Floki.find(module.price_selector)
+    |> Floki.find(module.product_price_selector)
     |> Floki.text()
     |> String.replace(~r/[^\d]/, "")
     |> Integer.parse()
@@ -125,7 +129,7 @@ defmodule DigitalMovies.Store do
   end
 
   def parse_type_from_title(module, title) do
-    Regex.named_captures(module.title_type_separator_regex, String.trim(title))
+    Regex.named_captures(module.product_title_separator_regex, String.trim(title))
     |> module.extract_title_and_type(title)
     |> module.categorize_type()
   end

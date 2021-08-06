@@ -2,17 +2,18 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStore do
   alias DigitalMovies.Product
   alias DigitalMovies.Store, as: MovieStore
 
-  @price_selector "[data-sale-price]"
-  @product_url_selector ".product-card > a"
   @service_separators [
     "Vudu 4K or iTunes 4K",
     "itunes 4K",
     "itunes HD"
   ]
-  @title_selector ".product-card .product-card__title"
-  @title_type_separator_regex ~r/\A(?<title>.+)\s(\(\d+.+)(?<type>(#{Enum.join(@service_separators, "|")})).+\z/i
 
   use MovieStore,
+    product_price_selector: "[data-sale-price]",
+    product_title_selector: ".product-card .product-card__title",
+    product_title_separator_regex:
+      ~r/\A(?<title>.+)\s(\(\d+.+)(?<type>(#{Enum.join(@service_separators, "|")})).+\z/i,
+    product_url_selector: ".product-card > a",
     products_selector: ".grid--view-items .grid__item",
     url: "https://ultravioletdigitalstore.com/collections/itunes-codes?sort_by=price-ascending"
 

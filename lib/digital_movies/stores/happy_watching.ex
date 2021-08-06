@@ -2,9 +2,6 @@ defmodule DigitalMovies.Stores.HappyWatching do
   alias DigitalMovies.Product
   alias DigitalMovies.Store, as: MovieStore
 
-  @product_url_selector ".details > a"
-  @title_selector ".details h4"
-  @price_selector ".details .price"
   @service_separators [
     "HDX VUDU & 4K iTunes Full Code",
     Regex.escape("HDX VUDU & HD iTunes (Full Code!)"),
@@ -15,9 +12,13 @@ defmodule DigitalMovies.Stores.HappyWatching do
     "HD iTunes",
     "iTunes via MA"
   ]
-  @title_type_separator_regex ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i
 
   use MovieStore,
+    product_price_selector: ".details .price",
+    product_title_selector: ".details h4",
+    product_title_separator_regex:
+      ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i,
+    product_url_selector: ".details > a",
     products_selector: ".grid-uniform .grid-item:not(.sold-out)",
     url: "https://happywatching.com/collections/itunes?sort_by=price-ascending"
 
@@ -36,7 +37,7 @@ defmodule DigitalMovies.Stores.HappyWatching do
 
   def parse_product_price(product) do
     product
-    |> Floki.find(@price_selector)
+    |> Floki.find(@product_price_selector)
     |> Floki.filter_out("del")
     |> Floki.text()
     |> String.replace(~r/[^\d]/, "")
@@ -46,7 +47,7 @@ defmodule DigitalMovies.Stores.HappyWatching do
 
   def parse_product_availability(product) do
     product
-    |> Floki.find(@price_selector)
+    |> Floki.find(@product_price_selector)
     |> Floki.text()
     |> String.match?(~r/Sold Out/)
     |> Kernel.not()
