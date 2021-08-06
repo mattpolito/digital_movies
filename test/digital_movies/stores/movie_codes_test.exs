@@ -28,6 +28,15 @@ defmodule DigitalMovies.Stores.MovieCodesTest do
              }
     end
 
+    test "UVHDX or itunes title" do
+      title = "Why Him UVHDX or itunes HD via MA"
+
+      assert MovieCodes.parse_type_from_title(title) == %{
+               title: "Why Him",
+               type: "iTunes HD"
+             }
+    end
+
     test "iTunes 4K title" do
       title = "Jack Reacher Never Back Down itunes 4K"
 
