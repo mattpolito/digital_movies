@@ -1,6 +1,6 @@
 defmodule DigitalMovies.Stores.UltravioletDigitalStore do
-  alias DigitalMovies.Product
-  alias DigitalMovies.Store, as: MovieStore
+  alias DigitalMovies.Stores.Product
+  alias DigitalMovies.Stores.Store
 
   @service_separators [
     "Vudu 4K or iTunes 4K",
@@ -8,7 +8,7 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStore do
     "itunes HD"
   ]
 
-  use MovieStore,
+  use Store,
     product_price_selector: "[data-sale-price]",
     product_title_selector: ".product-card .product-card__title",
     product_title_separator_regex:
@@ -17,7 +17,7 @@ defmodule DigitalMovies.Stores.UltravioletDigitalStore do
     products_selector: ".grid--view-items .grid__item",
     url: "https://ultravioletdigitalstore.com/collections/itunes-codes?sort_by=price-ascending"
 
-  @impl MovieStore
+  @impl Store
   def parse_product(product) do
     %{title: title, type: type} = parse_product_title(product)
 

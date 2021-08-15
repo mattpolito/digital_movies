@@ -1,6 +1,6 @@
 defmodule DigitalMovies.Stores.UltravioletDigitalStoreTest do
   alias DigitalMovies.Stores.UltravioletDigitalStore
-  alias DigitalMovies.Product
+  alias DigitalMovies.Stores.Product
   use ExUnit.Case
 
   test "parse_product" do

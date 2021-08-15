@@ -1,6 +1,8 @@
-defmodule DigitalMovies.Store do
-  @callback parse_product(Floki.html_tree()) :: %DigitalMovies.Product{}
+defmodule DigitalMovies.Stores.Store do
+  @callback parse_product(Floki.html_tree()) :: %DigitalMovies.Stores.Product{}
   @callback products_selector :: String.t()
+
+  alias DigitalMovies.Stores.Store
 
   defmacro __using__(opts) do
     quote bind_quoted: [opts: opts] do
@@ -11,34 +13,34 @@ defmodule DigitalMovies.Store do
       @products_selector Keyword.fetch!(opts, :products_selector)
       @url Keyword.fetch!(opts, :url)
 
-      @behaviour DigitalMovies.Store
+      @behaviour Store
 
-      def parse(document), do: DigitalMovies.Store.parse(__MODULE__, document)
+      def parse(document), do: Store.parse(__MODULE__, document)
 
       def parse_product_title(product),
-        do: DigitalMovies.Store.parse_product_title(__MODULE__, product)
+        do: Store.parse_product_title(__MODULE__, product)
 
       def parse_product_price(product),
-        do: DigitalMovies.Store.parse_product_price(__MODULE__, product)
+        do: Store.parse_product_price(__MODULE__, product)
 
       def parse_product_url(product),
-        do: DigitalMovies.Store.parse_product_url(__MODULE__, product)
+        do: Store.parse_product_url(__MODULE__, product)
 
       def parse_type_from_title(title),
-        do: DigitalMovies.Store.parse_type_from_title(__MODULE__, title)
+        do: Store.parse_type_from_title(__MODULE__, title)
 
-      def available?(product), do: DigitalMovies.Store.available?(__MODULE__, product)
+      def available?(product), do: Store.available?(__MODULE__, product)
 
       def product_type_is_itunes?(type),
-        do: DigitalMovies.Store.product_type_is_itunes?(__MODULE__, type)
+        do: Store.product_type_is_itunes?(__MODULE__, type)
 
       def extract_title_and_type(map, original_title),
-        do: DigitalMovies.Store.extract_title_and_type(__MODULE__, map, original_title)
+        do: Store.extract_title_and_type(__MODULE__, map, original_title)
 
       def categorize_type(%{type: nil} = map), do: map
       def categorize_type(%{type: type} = map), do: %{map | type: normalize_type(type)}
 
-      def normalize_type(type), do: DigitalMovies.Store.normalize_type(type)
+      def normalize_type(type), do: Store.normalize_type(type)
 
       def product_price_selector, do: @product_price_selector
       def product_title_selector, do: @product_title_selector

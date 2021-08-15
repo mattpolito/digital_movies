@@ -1,0 +1,34 @@
+<h1>Listing Listings</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Available</th>
+      <th>Price in cents</th>
+      <th>Title</th>
+      <th>Type</th>
+      <th>Url</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for listing <- @listings do %>
+    <tr>
+      <td><%= listing.available %></td>
+      <td><%= listing.price_in_cents %></td>
+      <td><%= listing.title %></td>
+      <td><%= listing.type %></td>
+      <td><%= listing.url %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.listing_path(@conn, :show, listing) %></span>
+        <span><%= link "Edit", to: Routes.listing_path(@conn, :edit, listing) %></span>
+        <span><%= link "Delete", to: Routes.listing_path(@conn, :delete, listing), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Listing", to: Routes.listing_path(@conn, :new) %></span>

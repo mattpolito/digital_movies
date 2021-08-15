@@ -1,6 +1,6 @@
 defmodule DigitalMovies.Stores.HappyWatching do
-  alias DigitalMovies.Product
-  alias DigitalMovies.Store, as: MovieStore
+  alias DigitalMovies.Stores.Product
+  alias DigitalMovies.Stores.Store
 
   @service_separators [
     "HDX VUDU & 4K iTunes Full Code",
@@ -13,7 +13,7 @@ defmodule DigitalMovies.Stores.HappyWatching do
     "iTunes via MA"
   ]
 
-  use MovieStore,
+  use Store,
     product_price_selector: ".details .price",
     product_title_selector: ".details h4",
     product_title_separator_regex:
@@ -22,7 +22,7 @@ defmodule DigitalMovies.Stores.HappyWatching do
     products_selector: ".grid-uniform .grid-item:not(.sold-out)",
     url: "https://happywatching.com/collections/itunes?sort_by=price-ascending"
 
-  @impl MovieStore
+  @impl Store
   def parse_product(product) do
     %{title: title, type: type} = parse_product_title(product)
 

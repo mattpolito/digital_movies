@@ -1,6 +1,6 @@
 defmodule DigitalMovies.Stores.HDMovieCodes do
-  alias DigitalMovies.Product
-  alias DigitalMovies.Store, as: MovieStore
+  alias DigitalMovies.Stores.Product
+  alias DigitalMovies.Stores.Store
 
   @availability_selector "[itemprop='itemCondition']"
   @service_separators [
@@ -11,7 +11,7 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
     "iTunes HD"
   ]
 
-  use MovieStore,
+  use Store,
     product_price_selector: "[itemprop='price']",
     product_title_selector: "[itemprop='name']",
     product_title_separator_regex:
@@ -20,7 +20,7 @@ defmodule DigitalMovies.Stores.HDMovieCodes do
     products_selector: ".products [itemprop='itemListElement']",
     url: "https://hdmoviecodes.com/collections/itunes-hd?sort_by=price-ascending"
 
-  @impl MovieStore
+  @impl Store
   def parse_product(product) do
     %{title: title, type: type} = parse_product_title(product)
 

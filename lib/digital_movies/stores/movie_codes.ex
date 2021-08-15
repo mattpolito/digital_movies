@@ -1,6 +1,6 @@
 defmodule DigitalMovies.Stores.MovieCodes do
-  alias DigitalMovies.Product
-  alias DigitalMovies.Store, as: MovieStore
+  alias DigitalMovies.Stores.Product
+  alias DigitalMovies.Stores.Store
 
   @service_separators [
     "HD VUDU",
@@ -12,7 +12,7 @@ defmodule DigitalMovies.Stores.MovieCodes do
   ]
   @availability_selector "[data-price]"
 
-  use MovieStore,
+  use Store,
     product_price_selector: "[data-sale-price]",
     product_title_selector: ".grid-view-item__title",
     product_title_separator_regex: ~r/^(?<title>.+?)\s(?<type>(#{Enum.join(@service_separators, "|")}).*)$/i,
@@ -20,7 +20,7 @@ defmodule DigitalMovies.Stores.MovieCodes do
     products_selector: ".grid--view-items .grid__item",
     url: "https://movie-codes.com/collections/itunes?sort_by=price-ascending"
 
-  @impl MovieStore
+  @impl Store
   def parse_product(product) do
     %{title: title, type: type} = parse_product_title(product)
 

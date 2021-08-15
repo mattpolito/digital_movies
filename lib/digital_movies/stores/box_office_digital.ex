@@ -1,8 +1,8 @@
 defmodule DigitalMovies.Stores.BoxOfficeDigital do
-  alias DigitalMovies.Product
-  alias DigitalMovies.Store, as: MovieStore
+  alias DigitalMovies.Stores.Product
+  alias DigitalMovies.Stores.Store
 
-  use MovieStore,
+  use Store,
     product_price_selector: ".card .card-body .price-section .price.price--withoutTax",
     product_title_selector: ".card .card-body .card-title",
     product_title_separator_regex: ~r/^(?<title>.+)\s\[(?<type>.+)\]/i,
@@ -10,7 +10,7 @@ defmodule DigitalMovies.Stores.BoxOfficeDigital do
     products_selector: "main .productGrid .product",
     url: "https://boxofficedigital.com/formats/itunes-4k/?sort=priceasc"
 
-  @impl MovieStore
+  @impl Store
   def parse_product(product) do
     %{title: title, type: type} = parse_product_title(product)
 

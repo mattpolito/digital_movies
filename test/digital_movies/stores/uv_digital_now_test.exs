@@ -1,6 +1,6 @@
 defmodule DigitalMovies.Stores.UVDigitalNowTest do
   alias DigitalMovies.Stores.UVDigitalNow
-  alias DigitalMovies.Product
+  alias DigitalMovies.Stores.Product
   use ExUnit.Case
 
   test "parse_product" do
@@ -14,7 +14,7 @@ defmodule DigitalMovies.Stores.UVDigitalNowTest do
              title: "AVENGERS INFINITY WAR",
              type: "iTunes HD",
              url:
-               "https://uvdigitalnow.dpdcart.com/product/207411?__dpd_cart=ba9f4052-713e-43f2-9de7-765d687ab179"
+               "https://uvdigitalnow.dpdcart.com/product/207411"
            }
   end
 

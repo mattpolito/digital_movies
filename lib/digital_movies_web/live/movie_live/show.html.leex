@@ -1,0 +1,22 @@
+<h1>Show Movie</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, DigitalMoviesWeb.MovieLive.FormComponent,
+    id: @movie.id,
+    title: @page_title,
+    action: @live_action,
+    movie: @movie,
+    return_to: Routes.movie_show_path(@socket, :show, @movie) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @movie.title %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.movie_show_path(@socket, :edit, @movie), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.movie_index_path(@socket, :index) %></span>

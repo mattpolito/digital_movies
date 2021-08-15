@@ -1,0 +1,35 @@
+<h1>Listing Movies</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, DigitalMoviesWeb.MovieLive.FormComponent,
+    id: @movie.id || :new,
+    title: @page_title,
+    action: @live_action,
+    movie: @movie,
+    return_to: Routes.movie_index_path(@socket, :index) %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="movies">
+    <%= for movie <- @movies do %>
+      <tr id="movie-<%= movie.id %>">
+        <td><%= movie.title %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.movie_show_path(@socket, :show, movie) %></span>
+          <span><%= live_patch "Edit", to: Routes.movie_index_path(@socket, :edit, movie) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: movie.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Movie", to: Routes.movie_index_path(@socket, :new) %></span>

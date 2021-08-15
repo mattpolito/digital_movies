@@ -1,48 +1,9 @@
 defmodule DigitalMovies do
-  alias DigitalMovies.Stores
+  @moduledoc """
+  DigitalMovies keeps the contexts that define your domain
+  and business logic.
 
-  @stores [
-    Stores.BoxOfficeDigital,
-    Stores.HDMovieCodes,
-    Stores.HappyWatching,
-    Stores.InstantDigitalMovies,
-    Stores.MovieCodes,
-    Stores.UVCodeShop,
-    Stores.UVDigitalNow,
-    Stores.UltravioletDigitalStore
-  ]
-
-  def run(stores \\ @stores) do
-    # for store <- stores,
-    #     %HTTPoison.Response{body: body, status_code: 200} <- Crawly.fetch(store.url) do
-    #   {:ok, document} = Floki.parse_document(body)
-
-    for store <- stores do
-      %HTTPoison.Response{body: body, status_code: status_code} = Crawly.fetch(store.url)
-
-      case status_code do
-        200 ->
-          parse_body(body, store)
-
-        _ ->
-          %{
-            store: store,
-            products: []
-          }
-      end
-    end
-  end
-
-  defp parse_body(body, store) do
-    {:ok, document} = Floki.parse_document(body)
-
-    products =
-      document
-      |> store.parse
-
-    %{
-      store: store,
-      products: products
-    }
-  end
+  Contexts are also responsible for managing your data, regardless
+  if it comes from the database, an external API or others.
+  """
 end

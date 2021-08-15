@@ -1,8 +1,8 @@
 defmodule DigitalMovies.Stores.InstantDigitalMovies do
-  alias DigitalMovies.Product
-  alias DigitalMovies.Store, as: MovieStore
+  alias DigitalMovies.Stores.Product
+  alias DigitalMovies.Stores.Store
 
-  use MovieStore,
+  use Store,
     product_price_selector: ".price-value",
     product_title_selector: ".product-grid-item-name",
     product_title_separator_regex: ~r/^(?<title>.+)\s\[(?<type>.+)\]/i,
@@ -10,7 +10,7 @@ defmodule DigitalMovies.Stores.InstantDigitalMovies do
     products_selector: ".product-grid .product-grid-item",
     url: "https://instantdigitalmovies.com/formats/itunes/itunes-4k/?sort=priceasc"
 
-  @impl MovieStore
+  @impl Store
   def parse_product(product) do
     %{title: title, type: type} = parse_product_title(product)
 
