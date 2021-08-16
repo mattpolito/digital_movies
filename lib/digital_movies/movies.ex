@@ -39,20 +39,7 @@ defmodule DigitalMovies.Movies do
   def get_listing!(id), do: Repo.get!(Listing, id)
 
   def refresh_listing(%DigitalMovies.Stores.Product{} = product) do
-    attrs = %{
-      available: product.available,
-      price_in_cents: product.price,
-      title: product.title,
-      type: product.type,
-      url: product.url
-    }
-
-    %Listing{}
-    |> Listing.changeset(attrs)
-    |> Repo.insert(
-      conflict_target: [:url],
-      on_conflict: {:replace_all_except, [:id, :inserted_at, :url]}
-    )
+    DigitalMovies.Movies.RefreshListing.run(product)
   end
 
   @doc """
@@ -82,7 +69,7 @@ defmodule DigitalMovies.Movies do
       ** (Ecto.NoResultsError)
 
   """
-  def get_movie!(id), do: Repo.get!(Movie, id)
+  def get_movie!(id), do: Repo.get!(Movie, id) |> Repo.preload(:listings)
 
   @doc """
   Creates a movie.

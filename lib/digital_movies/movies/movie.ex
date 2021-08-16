@@ -1,4 +1,6 @@
 defmodule DigitalMovies.Movies.Movie do
+  alias DigitalMovies.Movies.Listing
+
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -6,6 +8,7 @@ defmodule DigitalMovies.Movies.Movie do
   @foreign_key_type :binary_id
   schema "movies" do
     field :title, :string
+    has_many :listings, Listing
 
     timestamps()
   end

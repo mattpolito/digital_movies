@@ -16,6 +16,10 @@ defmodule DigitalMoviesWeb.MovieLive.Show do
      |> assign(:movie, Movies.get_movie!(id))}
   end
 
+  def price_to_money(price_in_cents) do
+    Money.new(price_in_cents, :USD)
+  end
+
   defp page_title(:show), do: "Show Movie"
   defp page_title(:edit), do: "Edit Movie"
 end

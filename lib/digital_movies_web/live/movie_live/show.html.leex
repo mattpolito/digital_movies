@@ -16,6 +16,26 @@
     <%= @movie.title %>
   </li>
 
+  Available at:
+  <table>
+    <thead>
+    <tr>
+      <th>Type</th>
+      <th>Price</th>
+      <th>URL</th>
+    </tr>
+    </thead>
+    <tbody>
+      <%= for listing <- @movie.listings do %>
+        <tr>
+          <td><%= listing.type %></td>
+          <td><%= price_to_money(listing.price_in_cents) %></td>
+          <td><%= link listing.url, to: listing.url %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
 </ul>
 
 <span><%= live_patch "Edit", to: Routes.movie_show_path(@socket, :edit, @movie), class: "button" %></span>
