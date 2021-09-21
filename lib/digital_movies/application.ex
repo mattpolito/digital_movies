@@ -14,9 +14,9 @@ defmodule DigitalMovies.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: DigitalMovies.PubSub},
       # Start the Endpoint (http/https)
-      DigitalMoviesWeb.Endpoint
+      DigitalMoviesWeb.Endpoint,
       # Start a worker by calling: DigitalMovies.Worker.start_link(arg)
-      # {DigitalMovies.Worker, arg}
+      DigitalMovies.RefreshStoreWorker
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
