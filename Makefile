@@ -12,8 +12,11 @@ help: ## Shows this help.
 		printf "%-30s %s\n" $$help_command $$help_info ; \
 	done
 
-console:
+console: ## Run application console
 	iex -S mix
 
-test:
+server: ## Starts application server
+	mix phx.server
+
+test:  ## Run application tests
 	mix test
