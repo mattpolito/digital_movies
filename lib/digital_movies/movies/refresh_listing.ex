@@ -34,6 +34,7 @@ defmodule DigitalMovies.Movies.RefreshListing do
     title_to_match =
       product.title
       |> String.downcase()
+      |> String.replace("’", "")
       |> String.replace(~r/\W/, "")
 
     query =
