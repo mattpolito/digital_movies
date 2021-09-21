@@ -41,6 +41,8 @@ defmodule DigitalMovies.Stores do
   end
 
   def refresh_listings() do
+    DigitalMovies.Repo.update_all(DigitalMovies.Movies.Listing, set: [available: false])
+
     for store_product <- run() do
       DigitalMovies.Movies.refresh_listing(store_product)
     end
