@@ -23,6 +23,7 @@
       <th>Type</th>
       <th>Price</th>
       <th>URL</th>
+      <th>Added On</th>
     </tr>
     </thead>
     <tbody>
@@ -31,6 +32,7 @@
           <td><%= listing.type %></td>
           <td><%= price_to_money(listing.price_in_cents) %></td>
           <td><%= link listing.url, to: listing.url %></td>
+          <td><%= NaiveDateTime.to_date(listing.inserted_at) %></td>
         </tr>
       <% end %>
     </tbody>

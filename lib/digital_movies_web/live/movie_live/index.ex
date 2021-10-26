@@ -6,7 +6,7 @@ defmodule DigitalMoviesWeb.MovieLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :movies, list_movies())}
+    {:ok, assign_movies(socket)}
   end
 
   @impl true
@@ -37,8 +37,10 @@ defmodule DigitalMoviesWeb.MovieLive.Index do
     movie = Movies.get_movie!(id)
     {:ok, _} = Movies.delete_movie(movie)
 
-    {:noreply, assign(socket, :movies, list_movies())}
+    {:noreply, assign_movies(socket)}
   end
+
+  defp assign_movies(socket), do: assign(socket, :movies, list_movies())
 
   defp list_movies do
     Movies.list_movies()

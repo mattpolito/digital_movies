@@ -52,7 +52,14 @@ defmodule DigitalMovies.Movies do
 
   """
   def list_movies do
-    Repo.all(Movie)
+    from(
+      m in Movie,
+      join: l in Listing,
+      on: m.id == l.movie_id,
+      group_by: m.id,
+      select: %{movie: m, listings_count: count(m.id), recent_listing: max(l.inserted_at)}
+    )
+    |> Repo.all()
   end
 
   @doc """

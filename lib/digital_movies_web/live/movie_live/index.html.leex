@@ -13,17 +13,19 @@
   <thead>
     <tr>
       <th>Title</th>
+      <th># Listings</th>
+      <th>Recent Listing</th>
 
       <th></th>
     </tr>
   </thead>
   <tbody id="movies">
-    <%= for movie <- @movies do %>
+    <%= for %{movie: movie, listings_count: listings_count, recent_listing: recent_listing} <- @movies do %>
       <tr id="movie-<%= movie.id %>">
-        <td><%= movie.title %></td>
-
+        <td><%= live_redirect movie.title, to: Routes.movie_show_path(@socket, :show, movie) %></td>
+        <td><%= listings_count %></td>
+        <td><%= NaiveDateTime.to_date(recent_listing) %></td>
         <td>
-          <span><%= live_redirect "Show", to: Routes.movie_show_path(@socket, :show, movie) %></span>
           <span><%= live_patch "Edit", to: Routes.movie_index_path(@socket, :edit, movie) %></span>
           <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: movie.id, data: [confirm: "Are you sure?"] %></span>
         </td>
