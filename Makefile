@@ -1,5 +1,5 @@
 #!make
-.PHONY: help console test
+.PHONY: help console test setup
 
 help: ## Shows this help.
 	@IFS=$$'\n' ; \
@@ -14,6 +14,11 @@ help: ## Shows this help.
 
 console: ## Run application console
 	iex -S mix
+
+setup: ## Setup the project
+	mix deps.get
+	mix compile
+	mix ecto.setup
 
 server: ## Starts application server
 	mix phx.server

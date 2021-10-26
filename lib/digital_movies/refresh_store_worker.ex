@@ -1,4 +1,4 @@
-defmodule DigitalMovies.RefreshStoreWoker do
+defmodule DigitalMovies.RefreshStoreWorker do
   use GenServer
 
   def start_link([]) do
