@@ -24,8 +24,30 @@
           <% end %>
         </a>
       </th>
-      <th># Listings</th>
-      <th>Recent Listing</th>
+      <th>
+        <a href="#" phx-click="toggle-sort" phx-value-sort-by="count_listings">
+          # Listings
+          <%= if elem(@sort_by, 0) == "count_listings" do %>
+            <%= if elem(@sort_by, 1) == :asc do %>
+              👆
+            <% else %>
+              👇
+            <% end %>
+          <% end %>
+        </a>
+      </th>
+      <th>
+        <a href="#" phx-click="toggle-sort" phx-value-sort-by="max_inserted_at">
+          Recent Listing
+          <%= if elem(@sort_by, 0) == "max_inserted_at" do %>
+            <%= if elem(@sort_by, 1) == :asc do %>
+              👆
+            <% else %>
+              👇
+            <% end %>
+          <% end %>
+        </a>
+      </th>
       <th></th>
     </tr>
   </thead>
