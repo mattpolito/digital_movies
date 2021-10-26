@@ -51,16 +51,20 @@ defmodule DigitalMovies.Movies do
       [%Movie{}, ...]
 
   """
-  def list_movies do
+  def list_movies(opts) do
     from(
       m in Movie,
       join: l in Listing,
       on: m.id == l.movie_id,
       group_by: m.id,
-      select: %{movie: m, listings_count: count(m.id), recent_listing: max(l.inserted_at)}
+      select: %{movie: m, listings_count: count(m.id), recent_listing: fragment("max(?) as max_inserted_at", l.inserted_at)}
     )
+    |> filter_by(opts)
     |> Repo.all()
   end
+
+  defp filter_by(query, []), do: query
+  defp filter_by(query, [sort_by: {"title", dir}]), do: order_by(query, [m, l], [{^dir, m.title}])
 
   @doc """
   Gets a single movie.

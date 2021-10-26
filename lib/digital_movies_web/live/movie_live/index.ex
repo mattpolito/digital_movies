@@ -6,7 +6,10 @@ defmodule DigitalMoviesWeb.MovieLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign_movies(socket)}
+    socket
+    |> assign(sort_by: {"title", :asc})
+    |> assign_movies()
+    |> ok()
   end
 
   @impl true
@@ -40,9 +43,26 @@ defmodule DigitalMoviesWeb.MovieLive.Index do
     {:noreply, assign_movies(socket)}
   end
 
-  defp assign_movies(socket), do: assign(socket, :movies, list_movies())
+  def handle_event("toggle-sort", %{"sort-by" => sort_by}, socket) do
+    {current_sort_by, direction} = Map.get(socket.assigns, :sort_by)
 
-  defp list_movies do
-    Movies.list_movies()
+    direction = case {sort_by, current_sort_by, direction} do
+      {s, s, :asc} -> :desc
+      _ -> :asc
+    end
+
+    socket
+    |> assign(sort_by: {sort_by, direction})
+    |> assign_movies()
+    |> noreply()
   end
+
+  defp assign_movies(%Phoenix.LiveView.Socket{assigns: assigns} = socket) do
+    assign(socket, :movies, list_movies(sort_by: Map.get(assigns, :sort_by)))
+  end
+
+  defp list_movies(opts), do: Movies.list_movies(opts)
+
+  defp ok(socket), do: {:ok, socket}
+  defp noreply(socket), do: {:noreply, socket}
 end
