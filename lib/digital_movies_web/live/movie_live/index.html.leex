@@ -9,38 +9,41 @@
     return_to: Routes.movie_index_path(@socket, :index) %>
 <% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>
-        <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "Title", sort_key: "title" %>
-      </th>
-      <th>
-        <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "# Listings", sort_key: "count_listings" %>
-      </th>
-      <th>
-        <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "Min Price", sort_key: "min_price" %>
-      </th>
-      <th>
-        <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "Recent Listing", sort_key: "max_inserted_at" %>
-      </th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="movies">
-    <%= for %{movie: movie, listings_count: listings_count, recent_listing: recent_listing, min_price: min_price} <- @movies do %>
-      <tr id="movie-<%= movie.id %>">
-        <td><%= live_redirect movie.title, to: Routes.movie_show_path(@socket, :show, movie) %></td>
-        <td><%= listings_count %></td>
-        <td><%= price_to_money(min_price) %></td>
-        <td><%= NaiveDateTime.to_date(recent_listing) %></td>
-        <td>
-          <span><%= live_patch "Edit", to: Routes.movie_index_path(@socket, :edit, movie) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: movie.id, data: [confirm: "Are you sure?"] %></span>
-        </td>
+<%= f = form_for @filter_changeset, "#", phx_change: "filter" %>
+  <table>
+    <thead>
+      <tr>
+        <th>
+          <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "Title", sort_key: "title" %>
+          <%= text_input f, :title, phx_debounce: 200 %>
+        </th>
+        <th>
+          <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "# Listings", sort_key: "count_listings" %>
+        </th>
+        <th>
+          <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "Min Price", sort_key: "min_price" %>
+        </th>
+        <th>
+          <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "Recent Listing", sort_key: "max_inserted_at" %>
+        </th>
+        <th></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody id="movies">
+      <%= for %{movie: movie, listings_count: listings_count, recent_listing: recent_listing, min_price: min_price} <- @movies do %>
+        <tr id="movie-<%= movie.id %>">
+          <td><%= live_redirect movie.title, to: Routes.movie_show_path(@socket, :show, movie) %></td>
+          <td><%= listings_count %></td>
+          <td><%= price_to_money(min_price) %></td>
+          <td><%= NaiveDateTime.to_date(recent_listing) %></td>
+          <td>
+            <span><%= live_patch "Edit", to: Routes.movie_index_path(@socket, :edit, movie) %></span>
+            <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: movie.id, data: [confirm: "Are you sure?"] %></span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</form>
 
 <span><%= live_patch "New Movie", to: Routes.movie_index_path(@socket, :new) %></span>

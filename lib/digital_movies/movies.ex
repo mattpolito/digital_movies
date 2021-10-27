@@ -51,8 +51,8 @@ defmodule DigitalMovies.Movies do
       [%Movie{}, ...]
 
   """
-  def list_movies(opts) do
-    from(
+  def list_movies(opts \\ []) do
+    query = from(
       m in Movie,
       join: l in Listing,
       on: m.id == l.movie_id,
@@ -64,21 +64,23 @@ defmodule DigitalMovies.Movies do
         recent_listing: fragment("max(?) as max_inserted_at", l.inserted_at)
       }
     )
-    |> filter_by(opts)
+
+    opts
+    |> Enum.reduce(query, &filter_by/2)
     |> Repo.all()
   end
 
-  defp filter_by(query, []), do: query
-  defp filter_by(query, sort_by: {"title", dir}), do: order_by(query, [m], [{^dir, m.title}])
+  defp filter_by({:filter_by, {}}, query), do: query
 
-  defp filter_by(query, sort_by: {"count_listings", dir}),
-    do: order_by(query, [{^dir, fragment("count_listings")}])
+  defp filter_by({:filter_by, %{"title" => title}}, query) do
+    filter = "%#{title}%"
+    where(query, [m], ilike(m.title, ^filter))
+  end
 
-  defp filter_by(query, sort_by: {"min_price", dir}),
-    do: order_by(query, [{^dir, fragment("min_price")}])
-
-  defp filter_by(query, sort_by: {"max_inserted_at", dir}),
-    do: order_by(query, [{^dir, fragment("max_inserted_at")}])
+  defp filter_by({:sort_by, {"title", dir}}, query), do: order_by(query, [m], [{^dir, m.title}])
+  defp filter_by({:sort_by, {"count_listings", dir}}, query), do: order_by(query, [{^dir, fragment("count_listings")}])
+  defp filter_by({:sort_by, {"min_price", dir}}, query), do: order_by(query, [{^dir, fragment("min_price")}])
+  defp filter_by({:sort_by, {"max_inserted_at", dir}}, query), do: order_by(query, [{^dir, fragment("max_inserted_at")}])
 
   @doc """
   Gets a single movie.

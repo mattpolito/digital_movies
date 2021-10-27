@@ -19,4 +19,9 @@ defmodule DigitalMovies.Movies.Movie do
     |> cast(attrs, [:title])
     |> validate_required([:title])
   end
+
+  def filter_changeset(attrs) do
+    %__MODULE__{}
+    |> cast(attrs, [:title])
+  end
 end
