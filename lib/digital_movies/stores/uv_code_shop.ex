@@ -15,7 +15,8 @@ defmodule DigitalMovies.Stores.UVCodeShop do
   use Store,
     product_price_selector: ".product-item--price",
     product_title_selector: "p",
-    product_title_separator_regex: ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i,
+    product_title_separator_regex:
+      ~r/^(?<title>.+)\s(?<type>(#{Enum.join(@service_separators, "|")}))$/i,
     product_url_selector: "a.product-grid-item",
     products_selector: ".grid-uniform .grid-item:not(.sold-out)",
     url: "https://www.uvcodeshop.com/collections/itunes-hd?sort_by=price-ascending"

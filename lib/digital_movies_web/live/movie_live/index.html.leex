@@ -13,49 +13,26 @@
   <thead>
     <tr>
       <th>
-        <a href="#" phx-click="toggle-sort" phx-value-sort-by="title">
-          Title
-          <%= if elem(@sort_by, 0) == "title" do %>
-            <%= if elem(@sort_by, 1) == :asc do %>
-              👆
-            <% else %>
-              👇
-            <% end %>
-          <% end %>
-        </a>
+        <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "Title", sort_key: "title" %>
       </th>
       <th>
-        <a href="#" phx-click="toggle-sort" phx-value-sort-by="count_listings">
-          # Listings
-          <%= if elem(@sort_by, 0) == "count_listings" do %>
-            <%= if elem(@sort_by, 1) == :asc do %>
-              👆
-            <% else %>
-              👇
-            <% end %>
-          <% end %>
-        </a>
+        <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "# Listings", sort_key: "count_listings" %>
       </th>
       <th>
-        <a href="#" phx-click="toggle-sort" phx-value-sort-by="max_inserted_at">
-          Recent Listing
-          <%= if elem(@sort_by, 0) == "max_inserted_at" do %>
-            <%= if elem(@sort_by, 1) == :asc do %>
-              👆
-            <% else %>
-              👇
-            <% end %>
-          <% end %>
-        </a>
+        <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "Min Price", sort_key: "min_price" %>
+      </th>
+      <th>
+        <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "Recent Listing", sort_key: "max_inserted_at" %>
       </th>
       <th></th>
     </tr>
   </thead>
   <tbody id="movies">
-    <%= for %{movie: movie, listings_count: listings_count, recent_listing: recent_listing} <- @movies do %>
+    <%= for %{movie: movie, listings_count: listings_count, recent_listing: recent_listing, min_price: min_price} <- @movies do %>
       <tr id="movie-<%= movie.id %>">
         <td><%= live_redirect movie.title, to: Routes.movie_show_path(@socket, :show, movie) %></td>
         <td><%= listings_count %></td>
+        <td><%= price_to_money(min_price) %></td>
         <td><%= NaiveDateTime.to_date(recent_listing) %></td>
         <td>
           <span><%= live_patch "Edit", to: Routes.movie_index_path(@socket, :edit, movie) %></span>

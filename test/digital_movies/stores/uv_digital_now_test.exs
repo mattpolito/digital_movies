@@ -13,8 +13,7 @@ defmodule DigitalMovies.Stores.UVDigitalNowTest do
              price: 359,
              title: "AVENGERS INFINITY WAR",
              type: "iTunes HD",
-             url:
-               "https://uvdigitalnow.dpdcart.com/product/207411"
+             url: "https://uvdigitalnow.dpdcart.com/product/207411"
            }
   end
 

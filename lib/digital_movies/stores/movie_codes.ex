@@ -15,7 +15,8 @@ defmodule DigitalMovies.Stores.MovieCodes do
   use Store,
     product_price_selector: "[data-sale-price]",
     product_title_selector: ".grid-view-item__title",
-    product_title_separator_regex: ~r/^(?<title>.+?)\s(?<type>(#{Enum.join(@service_separators, "|")}).*)$/i,
+    product_title_separator_regex:
+      ~r/^(?<title>.+?)\s(?<type>(#{Enum.join(@service_separators, "|")}).*)$/i,
     product_url_selector: "a.grid-view-item__link",
     products_selector: ".grid--view-items .grid__item",
     url: "https://movie-codes.com/collections/itunes?sort_by=price-ascending"

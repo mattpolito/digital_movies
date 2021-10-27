@@ -60,6 +60,7 @@ defmodule DigitalMovies.Movies do
       select: %{
         movie: m,
         listings_count: fragment("count(?) as count_listings", m.id),
+        min_price: fragment("min(?) as min_price", l.price_in_cents),
         recent_listing: fragment("max(?) as max_inserted_at", l.inserted_at)
       }
     )
@@ -68,9 +69,16 @@ defmodule DigitalMovies.Movies do
   end
 
   defp filter_by(query, []), do: query
-  defp filter_by(query, [sort_by: {"title", dir}]), do: order_by(query, [m], [{^dir, m.title}])
-  defp filter_by(query, [sort_by: {"count_listings", dir}]), do: order_by(query, [{^dir, fragment("count_listings")}])
-  defp filter_by(query, [sort_by: {"max_inserted_at", dir}]), do: order_by(query, [{^dir, fragment("max_inserted_at")}])
+  defp filter_by(query, sort_by: {"title", dir}), do: order_by(query, [m], [{^dir, m.title}])
+
+  defp filter_by(query, sort_by: {"count_listings", dir}),
+    do: order_by(query, [{^dir, fragment("count_listings")}])
+
+  defp filter_by(query, sort_by: {"min_price", dir}),
+    do: order_by(query, [{^dir, fragment("min_price")}])
+
+  defp filter_by(query, sort_by: {"max_inserted_at", dir}),
+    do: order_by(query, [{^dir, fragment("max_inserted_at")}])
 
   @doc """
   Gets a single movie.

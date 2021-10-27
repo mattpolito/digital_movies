@@ -46,10 +46,11 @@ defmodule DigitalMoviesWeb.MovieLive.Index do
   def handle_event("toggle-sort", %{"sort-by" => sort_by}, socket) do
     {current_sort_by, direction} = Map.get(socket.assigns, :sort_by)
 
-    direction = case {sort_by, current_sort_by, direction} do
-      {s, s, :asc} -> :desc
-      _ -> :asc
-    end
+    direction =
+      case {sort_by, current_sort_by, direction} do
+        {s, s, :asc} -> :desc
+        _ -> :asc
+      end
 
     socket
     |> assign(sort_by: {sort_by, direction})

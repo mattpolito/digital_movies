@@ -14,6 +14,5 @@ defmodule DigitalMovies.Repo.Migrations.CreateListings do
     end
 
     create unique_index(:listings, :url)
-
   end
 end

@@ -20,4 +20,8 @@ defmodule DigitalMoviesWeb.LiveHelpers do
     modal_opts = [id: :modal, return_to: path, component: component, opts: opts]
     live_component(DigitalMoviesWeb.ModalComponent, modal_opts)
   end
+
+  def price_to_money(price_in_cents) do
+    Money.new(price_in_cents, :USD)
+  end
 end

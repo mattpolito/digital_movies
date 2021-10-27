@@ -4,7 +4,13 @@ defmodule DigitalMovies.MoviesTest do
   alias DigitalMovies.Movies
 
   describe "listings" do
-    @valid_attrs %{available: true, price: 42, title: "some title", type: "some type", url: "some url"}
+    @valid_attrs %{
+      available: true,
+      price: 42,
+      title: "some title",
+      type: "some type",
+      url: "some url"
+    }
 
     def listing_fixture(attrs \\ %DigitalMovies.Stores.Product{}) do
       {:ok, listing} =
