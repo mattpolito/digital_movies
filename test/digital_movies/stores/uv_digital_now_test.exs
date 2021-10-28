@@ -17,43 +17,60 @@ defmodule DigitalMovies.Stores.UVDigitalNowTest do
            }
   end
 
-  describe "parse type from title" do
-    test "iTunes HD title" do
-      title =
-        "* ANT-MAN (2015) (HD) GOOGLE PLAY CODE ONLY ( MOVIE PORTS OVER TO VUDU IN HDX & TO iTunes in HD IF ALL ARE LINKED TO MA) ** NO DMI POINTS ON THIS CODE**)"
+  @parse_type_from_title_data [
+    %{
+      raw_title:
+        "* ANT-MAN (2015) (HD) GOOGLE PLAY CODE ONLY ( MOVIE PORTS OVER TO VUDU IN HDX & TO iTunes in HD IF ALL ARE LINKED TO MA) ** NO DMI POINTS ON THIS CODE**)",
+      expected: %{
+        title: "ANT-MAN (2015)",
+        type: "iTunes HD"
+      }
+    },
+    %{
+      raw_title: "* A QUIET PLACE (4K) iTunes CODE ONLY (Redeem direct to itunes.com/redeem )",
+      expected: %{
+        title: "A QUIET PLACE",
+        type: "iTunes 4K"
+      }
+    },
+    %{
+      raw_title:
+        "*  DOCTOR STRANGE (HDX) VUDU / MOVIESANYWHERE CODE ( NO GOOGLE PLAY WITH THIS CODE) ",
+      expected: %{
+        title: "DOCTOR STRANGE",
+        type: "(HDX) VUDU / MOVIESANYWHERE CODE ( NO GOOGLE PLAY WITH THIS CODE)"
+      }
+    },
+    %{
+      raw_title:
+        "10 CLOVERFIELD LANE (4K) iTunes CODE ONLY (Redeem direct to itunes.com/redeem )",
+      expected: %{
+        title: "10 CLOVERFIELD LANE",
+        type: "iTunes 4K"
+      }
+    },
+    %{
+      raw_title: "HUNGER GAMES MOCKINGJAY PART 2 (4K) iTunes CODE ONLY (Redeem direct to itunes.com/redeem )",
+      expected: %{
+        title: "HUNGER GAMES MOCKINGJAY PART 2",
+        type: "iTunes 4K"
+      }
+    },
+    %{
+      raw_title: "THE MARTIAN (HDX) Vudu Code OR(HDX) Vudu OR (4K) iTunes ( For 4K iTunes Redeem direct to https://foxredeem.com/ Then choose iTunes for 4K New iTunes code)",
+      expected: %{
+        title: "THE MARTIAN",
+        type: "iTunes 4K"
+      }
+    }
+  ]
 
-      assert UVDigitalNow.parse_type_from_title(title) == %{
-               title: "ANT-MAN (2015)",
-               type: "iTunes HD"
-             }
-    end
-
-    test "iTunes 4K title" do
-      title = "* A QUIET PLACE (4K) iTunes CODE ONLY (Redeem direct to itunes.com/redeem )"
-
-      assert UVDigitalNow.parse_type_from_title(title) == %{
-               title: "A QUIET PLACE",
-               type: "iTunes 4K"
-             }
-    end
-
-    test "Vudu / MA" do
-      title =
-        "*  DOCTOR STRANGE (HDX) VUDU / MOVIESANYWHERE CODE ( NO GOOGLE PLAY WITH THIS CODE) "
-
-      assert UVDigitalNow.parse_type_from_title(title) == %{
-               title: "DOCTOR STRANGE",
-               type: "(HDX) VUDU / MOVIESANYWHERE CODE ( NO GOOGLE PLAY WITH THIS CODE)"
-             }
-    end
-
-    test "with no leading asterisk" do
-      title = "10 CLOVERFIELD LANE (4K) iTunes CODE ONLY (Redeem direct to itunes.com/redeem )"
-
-      assert UVDigitalNow.parse_type_from_title(title) == %{
-               title: "10 CLOVERFIELD LANE",
-               type: "iTunes 4K"
-             }
+  describe "parse_type_from_title/1" do
+    for data <- @parse_type_from_title_data do
+      @data data
+      test "parses type from title #{@data.raw_title}" do
+        assert UVDigitalNow.parse_type_from_title(@data.raw_title) == @data.expected
+      end
     end
   end
 end
