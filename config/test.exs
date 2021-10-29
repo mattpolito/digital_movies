@@ -18,5 +18,7 @@ config :digital_movies, DigitalMoviesWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+config :digital_movies, Oban, queues: false, plugins: false
+
 # Print only warnings and errors during test
 config :logger, level: :warn

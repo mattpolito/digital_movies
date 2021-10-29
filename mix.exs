@@ -39,6 +39,7 @@ defmodule DigitalMovies.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:money, "~> 1.8"},
+      {:oban, "~> 2.7"},
       {:phoenix, "~> 1.5.9"},
       {:phoenix_ecto, "~> 4.1"},
       {:phoenix_html, "~> 2.11"},

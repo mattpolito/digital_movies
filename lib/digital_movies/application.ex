@@ -16,7 +16,7 @@ defmodule DigitalMovies.Application do
       # Start the Endpoint (http/https)
       DigitalMoviesWeb.Endpoint,
       # Start a worker by calling: DigitalMovies.Worker.start_link(arg)
-      DigitalMovies.RefreshStoreWorker
+      {Oban, Application.fetch_env!(:digital_movies, Oban)}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

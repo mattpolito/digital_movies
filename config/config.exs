@@ -27,6 +27,32 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :digital_movies, Oban,
+  repo: DigitalMovies.Repo,
+  plugins: [
+    {Oban.Plugins.Pruner, max_age: 300},
+    {Oban.Plugins.Cron,
+     crontab: [
+       {"0 0 * * *", DigitalMovies.RefreshStoreWorker,
+        args: %{module: DigitalMovies.Stores.BoxOfficeDigital}},
+       {"5 0 * * *", DigitalMovies.RefreshStoreWorker,
+        args: %{module: DigitalMovies.Stores.HDMovieCodes}},
+       {"10 0 * * *", DigitalMovies.RefreshStoreWorker,
+        args: %{module: DigitalMovies.Stores.HappyWatching}},
+       {"15 0 * * *", DigitalMovies.RefreshStoreWorker,
+        args: %{module: DigitalMovies.Stores.InstantDigitalMovies}},
+       {"20 0 * * *", DigitalMovies.RefreshStoreWorker,
+        args: %{module: DigitalMovies.Stores.MovieCodes}},
+       {"25 0 * * *", DigitalMovies.RefreshStoreWorker,
+        args: %{module: DigitalMovies.Stores.UVCodeShop}},
+       {"30 0 * * *", DigitalMovies.RefreshStoreWorker,
+        args: %{module: DigitalMovies.Stores.UVDigitalNow}},
+       {"35 0 * * *", DigitalMovies.RefreshStoreWorker,
+        args: %{module: DigitalMovies.Stores.UltravioletDigitalStore}}
+     ]}
+  ],
+  queues: [default: 10]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
