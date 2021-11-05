@@ -19,6 +19,7 @@ setup: ## Setup the project
 	mix deps.get
 	mix compile
 	mix ecto.setup
+	npm install --prefix assets/
 
 server: ## Starts application server
 	mix phx.server

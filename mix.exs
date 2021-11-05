@@ -35,21 +35,22 @@ defmodule DigitalMovies.MixProject do
     [
       {:crawly, "~> 0.13.0"},
       {:ecto_sql, "~> 3.4"},
+      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
       {:floki, ">= 0.30.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:money, "~> 1.8"},
       {:oban, "~> 2.7"},
-      {:phoenix, "~> 1.5.9"},
       {:phoenix_ecto, "~> 4.1"},
-      {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_dashboard, "~> 0.4"},
+      {:phoenix_html, "~> 3.1.0"},
+      {:phoenix_live_dashboard, "~> 0.6"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.15.1"},
+      {:phoenix_live_view, "~> 0.17.5"},
+      {:phoenix, "~> 1.6.2"},
       {:plug_cowboy, "~> 2.0"},
       {:postgrex, ">= 0.0.0"},
       {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"}
+      {:telemetry_poller, "~> 1.0.0"}
     ]
   end
 
@@ -61,6 +62,7 @@ defmodule DigitalMovies.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
+      "assets.deploy": ["esbuild default --minify", "phx.digest"],
       setup: ["deps.get", "ecto.setup", "cmd npm install --prefix assets"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
