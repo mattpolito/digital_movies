@@ -15,7 +15,9 @@ defmodule DigitalMoviesWeb.PageLive do
 
   @impl Phoenix.LiveView
   def handle_info(:refresh, socket) do
-    DigitalMovies.Stores.refresh_listings()
+    %{module: "all"}
+    |> DigitalMovies.RefreshStoreWorker.new()
+    |> Oban.insert()
 
     {:noreply, assign(socket, processing: false)}
   end

@@ -12,39 +12,28 @@ defmodule DigitalMovies.Stores do
     Stores.UltravioletDigitalStore
   ]
 
-  def run(stores \\ @stores) do
-    # for store <- stores,
-    #     %HTTPoison.Response{body: body, status_code: 200} <- Crawly.fetch(store.url) do
-    #   {:ok, document} = Floki.parse_document(body)
+  def fetch_store(store) do
+    %HTTPoison.Response{body: body, status_code: status_code} = Crawly.fetch(store.url)
 
-    listings =
-      for store <- stores do
-        %HTTPoison.Response{body: body, status_code: status_code} = Crawly.fetch(store.url)
+    case status_code do
+      200 ->
+        {:ok, document} = Floki.parse_document(body)
 
-        case status_code do
-          200 ->
-            parse_body(body, store)
+        document
+        |> store.parse
 
-          _ ->
-            []
-        end
-      end
-
-    List.flatten(listings)
+      _ ->
+        []
+    end
   end
 
-  defp parse_body(body, store) do
-    {:ok, document} = Floki.parse_document(body)
-
-    document
-    |> store.parse
-  end
-
-  def refresh_listings() do
+  def refresh_listings(stores \\ @stores) do
     DigitalMovies.Repo.update_all(DigitalMovies.Movies.Listing, set: [available: false])
 
-    for store_product <- run() do
-      DigitalMovies.Movies.refresh_listing(store_product)
+    for store <- stores do
+      store
+      |> fetch_store()
+      |> Enum.each(&DigitalMovies.Movies.refresh_listing/1)
     end
   end
 end
