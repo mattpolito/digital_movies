@@ -30,7 +30,7 @@ config :phoenix, :json_library, Jason
 config :digital_movies, Oban,
   repo: DigitalMovies.Repo,
   plugins: [
-    {Oban.Plugins.Pruner, max_age: 300},
+    {Oban.Plugins.Pruner, max_age: 15 * 24 * 60 * 60},
     {Oban.Plugins.Cron,
      crontab: [
        {"0 0 * * *", DigitalMovies.RefreshStoreWorker,
