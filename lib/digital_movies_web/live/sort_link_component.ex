@@ -1,16 +1,12 @@
 defmodule DigitalMoviesWeb.SortLinkComponent do
-  use Phoenix.LiveComponent
+  use Phoenix.Component
 
-  def render(assigns) do
-    ~L"""
-    <a href="#" phx-click="toggle-sort" phx-value-sort-by="<%= @sort_key %>">
-      <%= @title %>
-      <%= if elem(@sort_by, 0) == @sort_key do %>
-        <%= if elem(@sort_by, 1) == :asc do %>
-          👆
-        <% else %>
-          👇
-        <% end %>
+  def sort_link(assigns) do
+    ~H"""
+    <a href="#" id={"sort-#{assigns.sort_key}"} phx-click="toggle-sort" phx-value-sort-by={assigns.sort_key}>
+      <%= assigns.title %>
+      <%= if elem(assigns.sort_by, 0) == assigns.sort_key do %>
+        <%= if elem(assigns.sort_by, 1) == :asc, do: "👆", else: "👇" %>
       <% end %>
     </a>
     """

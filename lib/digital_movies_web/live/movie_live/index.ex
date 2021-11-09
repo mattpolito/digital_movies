@@ -1,6 +1,5 @@
 defmodule DigitalMoviesWeb.MovieLive.Index do
   use DigitalMoviesWeb, :live_view
-
   alias DigitalMovies.Movies
   alias DigitalMovies.Movies.Movie
 

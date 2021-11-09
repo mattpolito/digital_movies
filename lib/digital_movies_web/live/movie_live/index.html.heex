@@ -14,17 +14,17 @@
     <thead>
       <tr>
         <th>
-          <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "Title", sort_key: "title" %>
+          <.sort_link sort_by={@sort_by} title="Title" sort_key="title" />
           <%= text_input f, :title, phx_debounce: 200 %>
         </th>
         <th>
-          <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "# Listings", sort_key: "count_listings" %>
+          <.sort_link sort_by={@sort_by} title="# Listings" sort_key="count_listings" />
         </th>
         <th>
-          <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "Min Price", sort_key: "min_price" %>
+          <.sort_link sort_by={@sort_by} title="Min Price" sort_key="min_price" />
         </th>
         <th>
-          <%= live_component DigitalMoviesWeb.SortLinkComponent, sort_by: @sort_by, title: "Recent Listing", sort_key: "max_inserted_at" %>
+          <.sort_link sort_by={@sort_by} title="Recent Listing" sort_key="max_inserted_at" />
         </th>
         <th></th>
       </tr>

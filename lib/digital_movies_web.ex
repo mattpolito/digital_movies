@@ -44,8 +44,8 @@ defmodule DigitalMoviesWeb do
 
   def live_view do
     quote do
-      use Phoenix.LiveView,
-        layout: {DigitalMoviesWeb.LayoutView, "live.html"}
+      use Phoenix.LiveView, layout: {DigitalMoviesWeb.LayoutView, "live.html"}
+      import DigitalMoviesWeb.SortLinkComponent
 
       unquote(view_helpers())
     end
