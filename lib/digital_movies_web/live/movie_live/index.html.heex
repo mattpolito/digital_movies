@@ -9,7 +9,7 @@
     return_to: Routes.movie_index_path(@socket, :index) %>
 <% end %>
 
-<%= f = form_for @filter_changeset, "#", phx_change: "filter" %>
+<%= form_for @filter_changeset, "#", [phx_change: "filter"], fn f -> %>
   <table>
     <thead>
       <tr>
@@ -31,7 +31,7 @@
     </thead>
     <tbody id="movies">
       <%= for %{movie: movie, listings_count: listings_count, recent_listing: recent_listing, min_price: min_price} <- @movies do %>
-        <tr id="movie-<%= movie.id %>">
+        <tr id="movie-{movie.id}">
           <td><%= live_redirect movie.title, to: Routes.movie_show_path(@socket, :show, movie) %></td>
           <td><%= listings_count %></td>
           <td><%= price_to_money(min_price) %></td>
@@ -44,6 +44,6 @@
       <% end %>
     </tbody>
   </table>
-</form>
+<% end %>
 
 <span><%= live_patch "New Movie", to: Routes.movie_index_path(@socket, :new) %></span>
