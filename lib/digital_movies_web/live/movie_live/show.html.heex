@@ -1,44 +1,26 @@
-<h1>Show Movie</h1>
+<.header>
+  Movie <%= @movie.id %>
+  <:subtitle>This is a movie record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/movies/#{@movie}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit movie</.button>
+    </.link>
+  </:actions>
+</.header>
 
-<%= if @live_action in [:edit] do %>
-  <%= live_modal @socket, DigitalMoviesWeb.MovieLive.FormComponent,
-    id: @movie.id,
-    title: @page_title,
-    action: @live_action,
-    movie: @movie,
-    return_to: Routes.movie_show_path(@socket, :show, @movie) %>
-<% end %>
+<.list>
+  <:item title="Title"><%= @movie.title %></:item>
+</.list>
 
-<ul>
+<.back navigate={~p"/movies"}>Back to movies</.back>
 
-  <li>
-    <strong>Title:</strong>
-    <%= @movie.title %>
-  </li>
-
-  Available at:
-  <table>
-    <thead>
-    <tr>
-      <th>Type</th>
-      <th>Price</th>
-      <th>URL</th>
-      <th>Added On</th>
-    </tr>
-    </thead>
-    <tbody>
-      <%= for listing <- @movie.listings do %>
-        <tr>
-          <td><%= listing.type %></td>
-          <td><%= price_to_money(listing.price_in_cents) %></td>
-          <td><%= link listing.url, to: listing.url %></td>
-          <td><%= NaiveDateTime.to_date(listing.inserted_at) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-
-</ul>
-
-<span><%= live_patch "Edit", to: Routes.movie_show_path(@socket, :edit, @movie), class: "button" %></span>
-<span><%= live_redirect "Back", to: Routes.movie_index_path(@socket, :index) %></span>
+<.modal :if={@live_action == :edit} id="movie-modal" show on_cancel={JS.patch(~p"/movies/#{@movie}")}>
+  <.live_component
+    module={DigitalMoviesWeb.MovieLive.FormComponent}
+    id={@movie.id}
+    title={@page_title}
+    action={@live_action}
+    movie={@movie}
+    patch={~p"/movies/#{@movie}"}
+  />
+</.modal>

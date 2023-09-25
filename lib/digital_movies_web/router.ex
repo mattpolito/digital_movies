@@ -5,7 +5,7 @@ defmodule DigitalMoviesWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {DigitalMoviesWeb.LayoutView, :root}
+    plug :put_root_layout, html: {DigitalMoviesWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -17,10 +17,8 @@ defmodule DigitalMoviesWeb.Router do
   scope "/", DigitalMoviesWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
-
-    resources "/listings", ListingController
-
+    get "/", PageController, :home
+    
     live "/movies", MovieLive.Index, :index
     live "/movies/new", MovieLive.Index, :new
     live "/movies/:id/edit", MovieLive.Index, :edit
@@ -34,19 +32,20 @@ defmodule DigitalMoviesWeb.Router do
   #   pipe_through :api
   # end
 
-  # Enables LiveDashboard only for development
-  #
-  # If you want to use the LiveDashboard in production, you should put
-  # it behind authentication and allow only admins to access it.
-  # If your application does not have an admins-only section yet,
-  # you can use Plug.BasicAuth to set up some basic authentication
-  # as long as you are also using SSL (which you should anyway).
-  if Mix.env() in [:dev, :test] do
+  # Enable LiveDashboard and Swoosh mailbox preview in development
+  if Application.compile_env(:digital_movies, :dev_routes) do
+    # If you want to use the LiveDashboard in production, you should put
+    # it behind authentication and allow only admins to access it.
+    # If your application does not have an admins-only section yet,
+    # you can use Plug.BasicAuth to set up some basic authentication
+    # as long as you are also using SSL (which you should anyway).
     import Phoenix.LiveDashboard.Router
 
-    scope "/" do
+    scope "/dev" do
       pipe_through :browser
+
       live_dashboard "/dashboard", metrics: DigitalMoviesWeb.Telemetry
+      forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
 end

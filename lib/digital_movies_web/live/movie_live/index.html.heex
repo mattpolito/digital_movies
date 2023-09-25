@@ -1,49 +1,41 @@
-<h1>Listing Movies</h1>
+<.header>
+  Listing Movies
+  <:actions>
+    <.link patch={~p"/movies/new"}>
+      <.button>New Movie</.button>
+    </.link>
+  </:actions>
+</.header>
 
-<%= if @live_action in [:new, :edit] do %>
-  <%= live_modal @socket, DigitalMoviesWeb.MovieLive.FormComponent,
-    id: @movie.id || :new,
-    title: @page_title,
-    action: @live_action,
-    movie: @movie,
-    return_to: Routes.movie_index_path(@socket, :index) %>
-<% end %>
+<.table
+  id="movies"
+  rows={@streams.movies}
+  row_click={fn {_id, movie} -> JS.navigate(~p"/movies/#{movie}") end}
+>
+  <:col :let={{_id, movie}} label="Title"><%= movie.title %></:col>
+  <:action :let={{_id, movie}}>
+    <div class="sr-only">
+      <.link navigate={~p"/movies/#{movie}"}>Show</.link>
+    </div>
+    <.link patch={~p"/movies/#{movie}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, movie}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: movie.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
 
-<%= form_for @filter_changeset, "#", [phx_change: "filter"], fn f -> %>
-  <table>
-    <thead>
-      <tr>
-        <th>
-          <.sort_link sort_by={@sort_by} title="Title" sort_key="title" />
-          <%= text_input f, :title, phx_debounce: 200 %>
-        </th>
-        <th>
-          <.sort_link sort_by={@sort_by} title="# Listings" sort_key="count_listings" />
-        </th>
-        <th>
-          <.sort_link sort_by={@sort_by} title="Min Price" sort_key="min_price" />
-        </th>
-        <th>
-          <.sort_link sort_by={@sort_by} title="Recent Listing" sort_key="max_inserted_at" />
-        </th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="movies">
-      <%= for %{movie: movie, listings_count: listings_count, recent_listing: recent_listing, min_price: min_price} <- @movies do %>
-        <tr id="movie-{movie.id}">
-          <td><%= live_redirect movie.title, to: Routes.movie_show_path(@socket, :show, movie) %></td>
-          <td><%= listings_count %></td>
-          <td><%= price_to_money(min_price) %></td>
-          <td><%= NaiveDateTime.to_date(recent_listing) %></td>
-          <td>
-            <span><%= live_patch "Edit", to: Routes.movie_index_path(@socket, :edit, movie) %></span>
-            <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: movie.id, data: [confirm: "Are you sure?"] %></span>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
-
-<span><%= live_patch "New Movie", to: Routes.movie_index_path(@socket, :new) %></span>
+<.modal :if={@live_action in [:new, :edit]} id="movie-modal" show on_cancel={JS.patch(~p"/movies")}>
+  <.live_component
+    module={DigitalMoviesWeb.MovieLive.FormComponent}
+    id={@movie.id || :new}
+    title={@page_title}
+    action={@live_action}
+    movie={@movie}
+    patch={~p"/movies"}
+  />
+</.modal>

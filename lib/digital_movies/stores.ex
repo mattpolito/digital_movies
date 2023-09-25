@@ -2,7 +2,6 @@ defmodule DigitalMovies.Stores do
   alias DigitalMovies.Stores
 
   @stores [
-    Stores.BoxOfficeDigital,
     Stores.HDMovieCodes,
     Stores.HappyWatching,
     Stores.InstantDigitalMovies,

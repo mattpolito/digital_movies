@@ -7,18 +7,11 @@ defmodule DigitalMoviesWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_digital_movies_key",
-    signing_salt: "/Owqjt2C"
+    signing_salt: "81OBDxCq",
+    same_site: "Lax"
   ]
 
-  socket "/socket", DigitalMoviesWeb.UserSocket,
-    websocket: [timeout: 45_000],
-    longpoll: false
-
-  socket "/live", Phoenix.LiveView.Socket,
-    websocket: [
-      connect_info: [session: @session_options],
-      timeout: 45_000
-    ]
+  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -28,7 +21,7 @@ defmodule DigitalMoviesWeb.Endpoint do
     at: "/",
     from: :digital_movies,
     gzip: false,
-    only: ~w(assets fonts images favicon.ico robots.txt)
+    only: DigitalMoviesWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

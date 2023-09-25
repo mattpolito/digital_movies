@@ -4,13 +4,38 @@ defmodule DigitalMoviesWeb.MovieLive.FormComponent do
   alias DigitalMovies.Movies
 
   @impl true
+  def render(assigns) do
+    ~H"""
+    <div>
+      <.header>
+        <%= @title %>
+        <:subtitle>Use this form to manage movie records in your database.</:subtitle>
+      </.header>
+
+      <.simple_form
+        for={@form}
+        id="movie-form"
+        phx-target={@myself}
+        phx-change="validate"
+        phx-submit="save"
+      >
+        <.input field={@form[:title]} type="text" label="Title" />
+        <:actions>
+          <.button phx-disable-with="Saving...">Save Movie</.button>
+        </:actions>
+      </.simple_form>
+    </div>
+    """
+  end
+
+  @impl true
   def update(%{movie: movie} = assigns, socket) do
     changeset = Movies.change_movie(movie)
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:changeset, changeset)}
+     |> assign_form(changeset)}
   end
 
   @impl true
@@ -20,7 +45,7 @@ defmodule DigitalMoviesWeb.MovieLive.FormComponent do
       |> Movies.change_movie(movie_params)
       |> Map.put(:action, :validate)
 
-    {:noreply, assign(socket, :changeset, changeset)}
+    {:noreply, assign_form(socket, changeset)}
   end
 
   def handle_event("save", %{"movie" => movie_params}, socket) do
@@ -29,27 +54,37 @@ defmodule DigitalMoviesWeb.MovieLive.FormComponent do
 
   defp save_movie(socket, :edit, movie_params) do
     case Movies.update_movie(socket.assigns.movie, movie_params) do
-      {:ok, _movie} ->
+      {:ok, movie} ->
+        notify_parent({:saved, movie})
+
         {:noreply,
          socket
          |> put_flash(:info, "Movie updated successfully")
-         |> push_redirect(to: socket.assigns.return_to)}
+         |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, :changeset, changeset)}
+        {:noreply, assign_form(socket, changeset)}
     end
   end
 
   defp save_movie(socket, :new, movie_params) do
     case Movies.create_movie(movie_params) do
-      {:ok, _movie} ->
+      {:ok, movie} ->
+        notify_parent({:saved, movie})
+
         {:noreply,
          socket
          |> put_flash(:info, "Movie created successfully")
-         |> push_redirect(to: socket.assigns.return_to)}
+         |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        {:noreply, assign_form(socket, changeset)}
     end
   end
+
+  defp assign_form(socket, %Ecto.Changeset{} = changeset) do
+    assign(socket, :form, to_form(changeset))
+  end
+
+  defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
 end
